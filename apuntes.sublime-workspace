@@ -31,7 +31,15 @@
 			"file": "Apuntes BD/01-Forma-normal",
 			"settings":
 			{
-				"buffer_size": 97,
+				"buffer_size": 164,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Apuntes BD/Dumps/27-10-14.sql",
+			"settings":
+			{
+				"buffer_size": 2834630,
 				"line_ending": "Unix"
 			}
 		}
@@ -80,7 +88,9 @@
 	},
 	"expanded_folders":
 	[
-		"/media/marco/4D13D1CD41CF4F19/Apuntes"
+		"/D/Apuntes",
+		"/D/Apuntes/Apuntes BD",
+		"/D/Apuntes/Apuntes BD/Dumps"
 	],
 	"file_history":
 	[
@@ -145,7 +155,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -154,15 +164,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 97,
+						"buffer_size": 164,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								29,
-								29
+								0,
+								0
 							]
 						],
 						"settings":
@@ -172,6 +182,36 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Apuntes BD/Dumps/27-10-14.sql",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 2834630,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8275,
+								8275
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/SQL/SQL.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1080.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
