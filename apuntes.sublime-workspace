@@ -31,15 +31,15 @@
 			"file": "Apuntes BD/01-Forma-normal",
 			"settings":
 			{
-				"buffer_size": 164,
+				"buffer_size": 296,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "Apuntes BD/Dumps/27-10-14.sql",
+			"file": "Apuntes BD/00-Consultas",
 			"settings":
 			{
-				"buffer_size": 2834630,
+				"buffer_size": 480,
 				"line_ending": "Unix"
 			}
 		}
@@ -88,9 +88,8 @@
 	},
 	"expanded_folders":
 	[
-		"/D/Apuntes",
-		"/D/Apuntes/Apuntes BD",
-		"/D/Apuntes/Apuntes BD/Dumps"
+		"/media/marco/4D13D1CD41CF4F19/Apuntes",
+		"/media/marco/4D13D1CD41CF4F19/Apuntes/Apuntes BD"
 	],
 	"file_history":
 	[
@@ -108,7 +107,7 @@
 	],
 	"find":
 	{
-		"height": 25.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -122,6 +121,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"and",
+			"where",
+			"from",
+			"select",
 			"init",
 			"div class=\"game\"",
 			"li class=\"game\"",
@@ -139,6 +142,10 @@
 		"regex": false,
 		"replace_history":
 		[
+			"AND",
+			"WHERE",
+			"FROM",
+			"SELECT",
 			"div class=\"content\"",
 			"li",
 			"<h4>Argumento</h4>",
@@ -155,7 +162,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -164,15 +171,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 164,
+						"buffer_size": 296,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								296,
+								296
 							]
 						],
 						"settings":
@@ -184,37 +191,36 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "Apuntes BD/Dumps/27-10-14.sql",
-					"semi_transient": true,
+					"file": "Apuntes BD/00-Consultas",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2834630,
+						"buffer_size": 480,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8275,
-								8275
+								210,
+								210
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/SQL/SQL.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"open_with_edit": true,
+							"syntax": "Packages/SQL/SQL.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1080.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -258,7 +264,7 @@
 	"project": "apuntes.sublime-project",
 	"replace":
 	{
-		"height": 46.0
+		"height": 64.0
 	},
 	"save_all_on_build": true,
 	"select_file":

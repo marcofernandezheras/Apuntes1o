@@ -1,0 +1,12 @@
+/*Municipios de una provincia*/
+SELECT NombreMunicipio FROM municipio m, provincia p 
+WHERE m.CodigoProvincia = p.CodigoProvincia 
+AND NombreProvincia = 'Badajoz';
+
+/*Provincia y municipio de un alumno con id x*/
+SELECT NombreAlumno,ApellidosAlumno,NombreProvincia,NombreMunicipio 
+FROM alumno a,municipio m,provincia p, codigopostal c 
+WHERE c.CodigoPostal = a.CódigoPostalAlumno 
+AND p.CodigoProvincia = m.CodigoProvincia 
+AND m.IdMunicipio = c.IdMunicipio 
+AND a.IdAlumno = 15;

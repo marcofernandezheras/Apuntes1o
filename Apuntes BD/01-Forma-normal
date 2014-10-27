@@ -1,4 +1,7 @@
 http://es.wikipedia.org/wiki/Normalizaci%C3%B3n_de_bases_de_datos
 
 1ª FN: Eliminar Multivalores.
-2ª FN Todos los atributos secundarios son dependientes de la clave.
+2ª FN: Todos los atributos secundarios son dependientes de la clave.
+3ª FN: No existe ninguna dependencia funcional transitiva entre los atributos que no son clave.
+
+Forma normal de Boyce-Codd (FNBC)
