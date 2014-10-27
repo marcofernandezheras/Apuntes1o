@@ -2,4 +2,8 @@ Entidad : Rectangulo
 Atributo: Elipse
 Atributo clave: Elipse + nombre subrayado.
 Relación: Rombo (Verbo)
-Relaciones: flechas (1) ->  ó  (muchas) ->->
+Relaciones: flechas (1) ->  ó  (muchas/M) ->->
+
+En las relaciones 1->M, la clave de la entidad apuntada como uno, pasa a la entidad apuntada como mucho como atributo.
+
+Las relaciones M->->M Van juntas en una tabla.
