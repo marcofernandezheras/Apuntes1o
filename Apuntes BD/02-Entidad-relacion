@@ -1,0 +1,5 @@
+Entidad : Rectangulo
+Atributo: Elipse
+Atributo clave: Elipse + nombre subrayado.
+Relación: Rombo (Verbo)
+Relaciones: flechas (1) ->  ó  (muchas) ->->
