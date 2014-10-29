@@ -2,4 +2,9 @@ Teclalogia:
 	ctrl + space     = autocompletar
 	ctrl + shift + f = autosangrado
 	ctr  + f11       = run
+	f11				 = debug
 	ctrl + 7         = comentar linea
+
+Debuging:
+	f6  = ejecutar linea actual
+	f8  = resumir
