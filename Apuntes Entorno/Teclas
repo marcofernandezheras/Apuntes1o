@@ -1,4 +1,5 @@
 Teclalogia:
-	ctrl + space = autocompletar
+	ctrl + space     = autocompletar
 	ctrl + shift + f = autosangrado
-	ctr + f11 = run
+	ctr  + f11       = run
+	ctrl + 7         = comentar linea

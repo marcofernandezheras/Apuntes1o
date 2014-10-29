@@ -1,8 +1,117 @@
+2.1 Introducción:
+El proceso de diseñar una Base de Datos comienza con el análisis de la información que debe
+contener y de las relaciones entre los componentes de esa información.
+
+1. Descripción en lenguaje natural.
+2. Creación del Diagrama Entidad-Relación (E-R). También conocido como "diagrama de Chen".
+Estos diagramas modelizan el problema mediante entidades asociadas por relaciones. Adoptan la
+forma de grafos donde los datos se relacionan mediante flechas.
+3. Elección del modelo de datos (usualmente el relacional).
+4. Conversión del diagrama E-R al modelo relacional (tablas).
+5. Normalización (eliminar diversos defectos de diseño).
+6. Optimización (según criterios de almacenamiento interno, como el espacio en disco y el tiempo
+medio de acceso).
+
+2.2 Conceptos Básicos:
+Existen tres nociones básicas que emplea el modelo de datos E-R:
+• Conjuntos de Entidades.
+• Conjuntos de Relaciones.
+• Atributos.
+
+2.3 Conjuntos de Entidades
+Entidad: Representa una “cosa” u "objeto" del mundo real con existencia independiente, es decir,
+se diferencia unívocamente de cualquier otro objeto o cosa, incluso siendo del mismo tipo.
+
+Una entidad puede ser un objeto con existencia física como: una persona, un animal, un casa, etc.
+(entidad concreta), o un objeto con existencia conceptual como: un puesto de trabajo, una
+asignatura de clases, un nombre, etc (entidad abstracta).
+
+Una entidad está descrita y se representa por sus características o atributos. 
+
+Conjunto de entidades: Es una colección de entidades que comparten los mismos atributos o
+propiedades.
+
+Atributos: Una entidad se representa mediante un conjunto de atributos. Los atributos
+describen propiedades que posee cada miembro de un conjunto de entidades.
+
+2.4 Atributos:
+Dominio del Atributo: Es el conjunto de valores permitidos para un atributo en particular. 
+
+2.4.1 Atributos Simples y Compuestos
+Atributo Simple: Es aquel que no puede sub dividirse en más atributos de forma lógica. 
+
+Atributo compuesto: Son aquellos que pueden dividirse en sub-partes cada una de las cuales
+corresponde a otro atributo.
+
+Atributos Monovalorados y Multivalorados: Los atributos que se han especificado en los ejemplos
+anteriores tienen todos un solo valor para una entidad concreta. 
+
+Atributos Derivados: El valor para este tipo de atributos se puede derivar de los valores de otros
+atributos o entidades relacionadas.
+
+Atributos con valores nulos: Un atributo toma un valor nulo cuando una entidad no tiene un valor
+para un atributo. El valor nulo también puede indicar “no aplicable” es decir, que el valor no existe.
+
+2.5
+Conjunto de relaciones
+Una relación es una asociación entre diferentes entidades.
+
+2.6 Grado de una relación
+
+Tipo:
+• Unaria: Relación con la misma entidad (grado 1). //No es posible en MySql
+• Binaria: Relación entre dos entidades (grado 2), es la más frecuente.
+• Ternaria: Relación entre tres entidades (grado 3).
+• n-aria: Relación entre n entidades, es muy poco frecuente.
+
+2.7 DIAGRAMA ENTIDAD RELACIÓN
+
 Entidad : Rectangulo
 Atributo: Elipse
 Atributo clave: Elipse + nombre subrayado.
 Relación: Rombo (Verbo)
 Relaciones: flechas (1) ->  ó  (muchas/M) ->->
+
+2.7.2 Correspondencia de Cardinalidades
+
+Uno a uno (1,1): Una entidad en A se asocia con a lo sumo una entidad en B, y una entidad en B
+se asocia con a lo sumo una entidad en A.
+
+Uno a varios (1, N): Una entidad en A se asocia con cualquier número de entidades en B
+(ninguna o varias). Una entidad en B, sin embargo, se puede asociar con a lo sumo una entidad en
+A.
+
+Varios a Varios (N, N): Una entidad en A se asocia con cualquier número de entidades en B, y una
+entidad en B se asocia con cualquier número de entidades en A.
+
+
+2.10
+Conjuntos de entidades débiles
+Un conjunto de entidades puede no tener suficientes atributos para formar una clave primaria. Tal
+conjunto de entidades se denomina conjunto de entidades débiles. Un conjunto de entidades que
+tiene una clave primaria se denomina conjunto de entidades fuertes.
+
+2.11.1 Especialización
+Un conjunto de entidades puede incluir subgrupos de entidades que se diferencian de alguna forma
+de las otras entidades del conjunto. 
+
+2.11.2 Generalización
+El refinamiento a partir de un conjunto de entidades inicial en sucesivos niveles de subgrupos de
+entidades representa un proceso de diseño descendente en el que las distinciones se hacen
+explícitas. 
+
+De Modelo entidad- relación a Modelo Relacional
+
+Para la relación uno a uno:
+Si ambas entidades tienen la misma llave primaria se crea solo una tabla, en caso contrario se crean dos tablas poniendo la llave primaria de la otra entidad como llave foránea en la tabla que se esta realizando.
+
+Para la relación uno a muchos:
+Se crean dos tablas desde un inicio, pasando la llave primaria de una entidad a otra como foráneas. En caso de que la relación tuviera atributos estos pasan a formar parte de la tabla de la entidad con mayor cardinalidad.
+
+Para la relación muchos a muchos
+Se crean 3 tablas, una para cada entidad y una para la relación, poniendo en esta ultima las llaves primarias de las entidades y los atributos de la relación en caso de que existieran.
+
+Estos fueron algunos pasos para crear un modelo relacional, mas adelante veremos mas sobre su funcionalidad.
 
 En las relaciones 1->M, la clave de la entidad apuntada como uno, pasa a la entidad apuntada como mucho como atributo.
 

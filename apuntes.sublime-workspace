@@ -27,19 +27,27 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "Apuntes BD/02-Entidad-relacion",
+			"settings":
+			{
+				"buffer_size": 319,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 75.0,
+		"height": 306.0,
 		"selected_items":
 		[
 			[
-				"Package Control: in",
+				"Package Control: ",
 				"Package Control: Install Package"
 			],
 			[
-				"Package Control: ",
+				"Package Control: in",
 				"Package Control: Install Package"
 			],
 			[
@@ -79,7 +87,7 @@
 				"Snippet: bs3-col-3"
 			]
 		],
-		"width": 449.0
+		"width": 746.0
 	},
 	"console":
 	{
@@ -184,8 +192,37 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "Apuntes BD/02-Entidad-relacion",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 319,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								293,
+								293
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
