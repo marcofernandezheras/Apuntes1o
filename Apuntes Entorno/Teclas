@@ -5,6 +5,11 @@ Teclalogia:
 	f11				 = debug
 	ctrl + 7         = comentar linea
 
+	ctrl + f 		 = buscar / remplazar
+
 Debuging:
 	f6  = ejecutar linea actual
-	f8  = resumir
+	f8  = resumir / continuar
+
+	ctrl + shift + d = display
+	ctrl + shift + i = inspeccionar

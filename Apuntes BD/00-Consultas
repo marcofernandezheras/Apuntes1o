@@ -10,3 +10,156 @@ WHERE c.CodigoPostal = a.CódigoPostalAlumno
 AND p.CodigoProvincia = m.CodigoProvincia 
 AND m.IdMunicipio = c.IdMunicipio 
 AND a.IdAlumno = 15;
+
+/*Alumnos de 1º*/
+SELECT ApellidosComunidad,NombreComunidad
+FROM comunidadeducativa c, alumno a
+where c.IdComunidad = a.IdAlumno 
+and a.Curso = "1";
+
+/*Delegado de 1º*/
+SELECT ApellidosComunidad,NombreComunidad
+FROM comunidadeducativa c, alumno a, curso cu
+where c.IdComunidad = a.IdAlumno 
+and a.IdAlumno = cu.IdDelegado
+and a.Curso = "1";
+
+/*Horario Por Dia*/
+SELECT h.IdFranja as 'Clase',f.HoraInicio, f.HoraFin, m.NombreModulo 
+from horario h, modulo m, diasemana s, franjahoraria f, curso c
+where
+h.IdModulo = m.IdModulo
+and h.IdDiaSemana = s.IdDiaSemana
+and h.IdFranja = f.IdFranja
+and m.Curso = c.Curso
+and c.Curso = '1'
+and s.IdDiaSemana = 3;
+
+
+/* 01 Lista de alumnos de primero ordenados por número alumno.*/
+SELECT c.NombreComunidad, c.ApellidosComunidad
+from comunidadeducativa c, alumno a
+WHERE
+c.IdComunidad = a.IdAlumno
+and a.Curso = '1';
+
+/* 02 Lista de Módulos de 1º ordenados por nombre. */
+SELECT * from modulo where curso = '1' ORDER BY 2;
+
+/* 03 Mostrar DNI y Nombre de los alumnos del ciclo que se llamen Carlos. */
+SELECT c.DNIComunidad, c.NombreComunidad, c.ApellidosComunidad 
+from comunidadeducativa c, alumno a
+WHERE
+a.IdAlumno = c.IdComunidad
+and c.NombreComunidad = 'Carlos';
+
+SELECT c.DNIComunidad, c.NombreComunidad, c.ApellidosComunidad 
+from comunidadeducativa c, alumno a
+WHERE
+a.IdAlumno = c.IdComunidad
+and c.NombreComunidad like '%Carlos%';
+
+/* 04 Los alumnos del ciclo de una misma ciudad. */ç
+SELECT c.NombreComunidad, c.ApellidosComunidad 
+from comunidadeducativa c, alumno a, codigopostal cod, municipio mun
+WHERE
+a.IdAlumno = c.IdComunidad
+and c.`CódigoPostalComunidad` = cod.CodigoPostal
+and mun.IdMunicipio = cod.IdMunicipio
+and mun.NombreMunicipio = 'Almendralejo';
+
+/* 05 Las ciudades de los alumnos que están en el ciclo. */
+SELECT DISTINCT mun.NombreMunicipio 
+from comunidadeducativa c, alumno a, codigopostal cod, municipio mun
+WHERE
+a.IdAlumno = c.IdComunidad
+and c.`CódigoPostalComunidad` = cod.CodigoPostal
+and mun.IdMunicipio = cod.IdMunicipio;
+
+/* 06 Los módulos de 1º con más de 5 Horas semanales. */
+SELECT m.NombreModulo, m.HorasSemanales
+from modulo m
+WHERE
+m.Curso = '1'
+and m.HorasSemanales > 5;
+
+/* 10 Los módulos cuyas horas totales del curso sean superiores a 100. */
+SELECT m.NombreModulo, m.HorasAnuales
+from modulo m
+WHERE
+m.Curso = '1'
+and m.HorasAnuales > 100;
+
+/* 11 Los módulos cuyas horas semanales estén comprendidas entre 5 y 7. */
+SELECT m.NombreModulo, m.HorasSemanales
+from modulo m
+WHERE
+m.Curso = '1'
+and m.HorasSemanales BETWEEN 5 and 7;
+
+/* 12 Realiza un traductor Español-Inglés. */
+
+/* 07 Los módulos de 1º para un día de la semana. */
+SELECT m.NombreModulo
+from modulo m, diasemana d, horario h
+WHERE
+h.IdModulo = m.IdModulo
+and h.IdDiaSemana = d.IdDiaSemana
+and m.Curso = '1'
+and d.IdDiaSemana = 1;
+
+/* 08 Obten el horario de un curso. */
+SELECT d.NombreDia, concat(f.HoraInicio," - ", f.HoraFin) as 'Horario' , m.NombreModulo
+from modulo m, horario h, franjahoraria f, diasemana d
+WHERE
+h.IdModulo = m.IdModulo
+and h.IdDiaSemana = d.IdDiaSemana
+and h.IdFranja = f.IdFranja
+and m.Curso = '1'
+ORDER BY d.IdDiaSemana,f.IdFranja;
+
+/* 09 Muestras el Calendario del curso escolar 2013-14. */
+
+/* 13 A partir de un módulo muestra el profesor(es)que lo imparten. */
+SELECT m.NombreModulo
+from modulo m, profesor p, comunidadeducativa c
+WHERE
+m.CodigoProfesor = p.IdProfesor
+and c.IdComunidad = p.IdProfesor
+and c.NombreComunidad LIKE 'Luciano%'
+
+/* 14 Las clases de un determinado módulo en un día determinado. */
+SELECT d.NombreDia, concat(f.HoraInicio," - ", f.HoraFin) as 'Horario' , m.NombreModulo
+from modulo m, horario h, franjahoraria f, diasemana d
+WHERE
+h.IdModulo = m.IdModulo
+and h.IdDiaSemana = d.IdDiaSemana
+and h.IdFranja = f.IdFranja
+and m.NombreModulo Like 'Progrm%'
+ORDER BY d.IdDiaSemana,f.IdFranja;
+
+/* 15 Calcular las semanas para impartir cada módulo. */
+SELECT m.NombreModulo, m.HorasAnuales / m.HorasSemanales as 'Semanas' from modulo m;
+
+/* 16 ¿Qué días se imparte un determinado módulo? */
+SELECT DISTINCT m.NombreModulo, d.NombreDia
+from horario h, modulo m, diasemana d
+WHERE
+h.IdModulo = m.IdModulo
+and h.IdDiaSemana = d.IdDiaSemana
+and m.IdModulo = 1
+order by d.IdDiaSemana;
+
+/* 17 ¿Qué  días son lectivos en un mes determinado? */
+
+/* 18 El módulo que se imparte en un curso, de un día y a una hora. */
+SELECT m.NombreModulo, d.NombreDia
+from horario h, modulo m, diasemana d, franjahoraria f
+WHERE
+h.IdModulo = m.IdModulo
+and h.IdFranja = f.IdFranja
+and h.IdDiaSemana = d.IdDiaSemana
+and m.Curso = '1'
+and d.IdDiaSemana = 1
+and f.IdFranja = 1
+order by d.IdDiaSemana
