@@ -1,3 +1,22 @@
+/*Hora y fecha actuales*/
+Select concat(
+'Hoy es ',
+DAYNAME(now()),
+" ",
+DAY(now()),
+" de ",
+MONTHNAME(now()),
+" del año ",
+YEAR(now()),
+" y son las ",
+HOUR(now()),
+" horas y ",
+MINUTE(now()),
+" minutos y ",
+SECOND(now()),
+" segundos"
+);
+
 /*Municipios de una provincia*/
 SELECT NombreMunicipio FROM municipio m, provincia p 
 WHERE m.CodigoProvincia = p.CodigoProvincia 
