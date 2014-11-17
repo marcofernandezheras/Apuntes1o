@@ -1,3 +1,16 @@
+/*Alumno nuevo o repetidor*/
+SELECT a.IdAlumno, IF(a.Repetidor = 0, "NUEVO" ,"REPETIDOR") 
+FROM alumno a;
+
+/*Edad de un Alumno*/
+SELECT 
+YEAR(CURDATE()) 
+- 
+YEAR(`FechaNacimientoComunidad`) 
++ IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(`FechaNacimientoComunidad`,'%m-%d'), 0, -1)
+AS `EDAD_ACTUAL` 
+FROM `comunidadeducativa`;
+
 /*Hora y fecha actuales*/
 Select concat(
 'Hoy es ',
@@ -119,7 +132,7 @@ and m.HorasSemanales BETWEEN 5 and 7;
 /* 12 Realiza un traductor Español-Inglés. */
 
 /* 07 Los módulos de 1º para un día de la semana. */
-SELECT m.NombreModulo
+SELECT DISTINCT m.NombreModulo
 from modulo m, diasemana d, horario h
 WHERE
 h.IdModulo = m.IdModulo
@@ -128,7 +141,7 @@ and m.Curso = '1'
 and d.IdDiaSemana = 1;
 
 /* 08 Obten el horario de un curso. */
-SELECT d.NombreDia, concat(f.HoraInicio," - ", f.HoraFin) as 'Horario' , m.NombreModulo
+SELECT d.NombreDia, concat(f.HoraInicio," - ", f.HoraFinal) as 'Horario' , m.NombreModulo
 from modulo m, horario h, franjahoraria f, diasemana d
 WHERE
 h.IdModulo = m.IdModulo
@@ -138,6 +151,13 @@ and m.Curso = '1'
 ORDER BY d.IdDiaSemana,f.IdFranja;
 
 /* 09 Muestras el Calendario del curso escolar 2013-14. */
+SELECT d.NombreDia, c.NumeroDia, m.NombreMes, t.NombreTipoDia, if(m.IdMes>8, 2014,2015) as "Año"
+from calendario c, mes m, tipodia t, diasemana d
+where
+c.IdMes = m.IdMes
+and c.IdTipoDia = t.IdTipoDia
+and c.IdDiaSemana = d.IdDiaSemana
+order by 5,m.IdMes, c.NumeroDia
 
 /* 13 A partir de un módulo muestra el profesor(es)que lo imparten. */
 SELECT m.NombreModulo
@@ -170,6 +190,14 @@ and m.IdModulo = 1
 order by d.IdDiaSemana;
 
 /* 17 ¿Qué  días son lectivos en un mes determinado? */
+SELECT d.NombreDia, c.NumeroDia, m.NombreMes, t.NombreTipoDia, if(m.IdMes>8, 2014,2015) as "Año"
+from calendario c, mes m, tipodia t, diasemana d
+where
+c.IdMes = m.IdMes
+and c.IdTipoDia = t.IdTipoDia
+and c.IdDiaSemana = d.IdDiaSemana
+and t.IdTipoDia = 6
+order by 5,m.IdMes, c.NumeroDia
 
 /* 18 El módulo que se imparte en un curso, de un día y a una hora. */
 SELECT m.NombreModulo, d.NombreDia

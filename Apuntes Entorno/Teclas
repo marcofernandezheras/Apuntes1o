@@ -2,6 +2,7 @@ Teclalogia:
 	ctrl + space     = autocompletar
 	ctrl + shift + f = autosangrado
 	ctr  + f11       = run
+	ctrl + shift + f11 = coverage
 	f11				 = debug
 	ctrl + 7         = comentar linea
 
