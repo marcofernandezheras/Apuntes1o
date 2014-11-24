@@ -160,6 +160,14 @@ and c.IdDiaSemana = d.IdDiaSemana
 order by 5,m.IdMes, c.NumeroDia
 
 /* 13 A partir de un módulo muestra el profesor(es)que lo imparten. */
+SELECT c.NombreComunidad 
+from modulo m, profesor p, comunidadeducativa c
+where
+m.CodigoProfesor = p.IdProfesor
+and c.IdComunidad = p.IdProfesor
+and m.NombreModulo Like 'Base%'
+
+/** Modulos de un profesor **/
 SELECT m.NombreModulo
 from modulo m, profesor p, comunidadeducativa c
 WHERE
@@ -168,13 +176,14 @@ and c.IdComunidad = p.IdProfesor
 and c.NombreComunidad LIKE 'Luciano%'
 
 /* 14 Las clases de un determinado módulo en un día determinado. */
-SELECT d.NombreDia, concat(f.HoraInicio," - ", f.HoraFin) as 'Horario' , m.NombreModulo
+SELECT d.NombreDia, concat(f.HoraInicio," - ", f.HoraFinal) as 'Horario' , m.NombreModulo
 from modulo m, horario h, franjahoraria f, diasemana d
 WHERE
 h.IdModulo = m.IdModulo
 and h.IdDiaSemana = d.IdDiaSemana
 and h.IdFranja = f.IdFranja
 and m.NombreModulo Like 'Progrm%'
+and d.IdDiaSemana  = 2
 ORDER BY d.IdDiaSemana,f.IdFranja;
 
 /* 15 Calcular las semanas para impartir cada módulo. */
@@ -210,3 +219,14 @@ and m.Curso = '1'
 and d.IdDiaSemana = 1
 and f.IdFranja = 1
 order by d.IdDiaSemana
+
+/* copiar valores de modulo a imparte*/
+INSERT INTO imparte (IdModulo,IdProfesor)  SELECT IdModulo,CodigoProfesor from modulo;
+
+/* Profesores de un modulo*/
+SELECT c.NombreComunidad, m.NombreModulo 
+from comunidadeducativa c, profesor p, modulo m, imparte i
+where c.IdComunidad = p.IdProfesor
+and i.IdModulo = m.IdModulo
+and i.IdProfesor = p.IdProfesor
+and m.NombreModulo like "Sistemas Informáticos";
