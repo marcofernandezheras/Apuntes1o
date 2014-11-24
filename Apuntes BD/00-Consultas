@@ -230,3 +230,48 @@ where c.IdComunidad = p.IdProfesor
 and i.IdModulo = m.IdModulo
 and i.IdProfesor = p.IdProfesor
 and m.NombreModulo like "Sistemas Informáticos";
+
+/* Horas por semana se imparten en primero */
+SELECT SUM(m.HorasSemanales) as 'Total horas'
+from modulo m
+where m.Curso = 1;
+
+/* Media diaria de horas de un módulo */
+SELECT (SUM(m.HorasSemanales) / 5) as 'Media diaria'
+from modulo m
+where m.NombreModulo like "Bases%";
+
+/*Numero de alumnos que no repiten */
+SELECT COUNT(*)
+from alumno a
+where a.Repetidor = 0
+and a.Curso = 1;
+
+/* Count filas VS NULL */
+SELECT COUNT(*) as 'Total filas', COUNT(c.EmailComunidad) as 'Total emails'
+from comunidadeducativa c;
+
+/* Maximo de horas semanales */
+SELECT MAX(m.HorasSemanales) as 'Minimo' from modulo m;
+
+/* Minimo de horas semanales */
+SELECT MIN(m.HorasSemanales) as 'Minimo' from modulo m;
+
+/* Media de edad de lo alumnos */
+SELECT AVG(
+YEAR(CURDATE()) 
+- 
+YEAR(`FechaNacimientoComunidad`) 
++ IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(`FechaNacimientoComunidad`,'%m-%d'), 0, -1)
+)
+from comunidadeducativa c, alumno a
+where c.IdComunidad = a.IdAlumno;
+
+/* Edad máxima */
+SELECT MAX(
+YEAR(CURDATE()) 
+- 
+YEAR(`FechaNacimientoComunidad`) 
++ IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(`FechaNacimientoComunidad`,'%m-%d'), 0, -1))
+from comunidadeducativa c, alumno a
+where c.IdComunidad = a.IdAlumno;
