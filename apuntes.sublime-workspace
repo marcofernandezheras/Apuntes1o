@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"Sel",
+				"SELECT"
+			],
+			[
 				"Di",
 				"DISTINCT"
 			],
@@ -32,10 +36,29 @@
 	"buffers":
 	[
 		{
+			"contents": "Sum(columna)   /* Calcula la suma de las filas de la columna especificada. */\nAvg(columna)   /* Calcula la media de las filas de la columna especificada. */\nCount(*)       /* Nos proporciona el valor del número de filas de esa tabla. */\nCount(columna) /* Nos proporciona el valor del número de filas de esa tabla para esa columna. */\nMax(columna)   /* Nos indica cual es el valor máximo de esa columna. */\nMin(columna)   /* Nos indica cual es el valor mínimo de esa columna. */\n",
+			"file": "Apuntes BD/04-Funciones",
+			"file_size": 0,
+			"file_write_time": 130612985251541064,
+			"settings":
+			{
+				"buffer_size": 478,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Apuntes BD/02-Entidad-relacion",
+			"settings":
+			{
+				"buffer_size": 5397,
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "Apuntes BD/00-Consultas",
 			"settings":
 			{
-				"buffer_size": 6825,
+				"buffer_size": 8029,
 				"line_ending": "Unix"
 			}
 		}
@@ -181,24 +204,81 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Apuntes BD/00-Consultas",
+					"file": "Apuntes BD/04-Funciones",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6825,
+						"buffer_size": 478,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								190,
-								190
+								478,
+								478
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/SQL/SQL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Apuntes BD/02-Entidad-relacion",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 5397,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Apuntes BD/00-Consultas",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8029,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7367,
+								7367
 							]
 						],
 						"settings":
@@ -206,10 +286,10 @@
 							"syntax": "Packages/SQL/SQL.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 3628.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -288,7 +368,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 238.0,
+	"side_bar_width": 285.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
