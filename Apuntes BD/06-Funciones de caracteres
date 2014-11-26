@@ -1,0 +1,15 @@
+/* CONCAT(str1,str2,...) Retorna NULL si algún argumento es NULL */
+SELECT CONCAT(... , ... , ...)
+
+/* INSERT(str,pos,len,newstr) Retorna la cadena str, 
+con la subcadena comenzando en la posición pos y len caracteres ¡¡REEMPLAZA!!
+por la cadena newstr. Retorna la cadena original si pos no está entre la longitud de la cadena */
+
+SELECT INSERT( c.`CódigoPostalComunidad` , 4, 1, '-' ) AS 'C.P'
+FROM comunidadeducativa c; -> 060-5
+
+
+
+/* INSTR(str,substr) Retorna la posición de la primera coincidencia de la subcadena substr en la cadena str. */
+SELECT INSTR( c.NombreComunidad , 'Carlos' ) 
+FROM comunidadeducativa c; -> número

@@ -275,3 +275,49 @@ YEAR(`FechaNacimientoComunidad`)
 + IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(`FechaNacimientoComunidad`,'%m-%d'), 0, -1))
 from comunidadeducativa c, alumno a
 where c.IdComunidad = a.IdAlumno;
+
+/* año mas pequeño */
+SELECT MIN(YEAR(FechaNacimientoComunidad)) 
+from comunidadeducativa c;
+
+/* Total de alumnos de almendralejo */
+SELECT COUNT(*) from comunidadeducativa c, alumno a, codigopostal cod
+where c.IdComunidad = a.IdAlumno
+and cod.CodigoPostal = "06200";
+
+/* Copiar datos en tabla nueva */
+CREATE TABLE pruebas 
+SELECT DISTINCT r.FechaRealizacion, p.NombrePrueba, r.IdModulo, r.IdTipoPrueba , r.IdProfesor
+from registarprueba r, prueba p
+where r.IdNombrePrueba = p.IdPrueba;
+
+Create table nota 
+SELECT p.IdPrueba, r.IdAlumno, r.Nota from prueba p, registarprueba r
+where p.FechaRealizacion = r.FechaRealizacion
+and p.IdModulo = r.IdModulo
+and p.IdTipoPrueba = r.IdTipoPrueba
+and p.IdProfesor = r.IdProfesor;
+
+/* Notas de sql de 10 de diciembre */
+SELECT c.ApellidosComunidad, c.NombreComunidad, n.Nota
+from comunidadeducativa c, prueba p , nota n
+where
+p.IdPrueba = n.IdPrueba
+and n.IdAlumno = c.IdComunidad
+and p.NombrePrueba like "%Sql%"
+and p.FechaRealizacion like '2014-12-10%';
+
+/* Email comunidad o del instituto si es null */
+SELECT c.ApellidosComunidad, c.NombreComunidad, IFNULL(c.EmailComunidad,'harnina@h.es') 
+from comunidadeducativa c;
+
+/* Buscar y reemplazar @ por # en los email*/
+SELECT  INSERT( c.EmailComunidad , INSTR( c.EmailComunidad , '@' ) , 1, '#' )  
+FROM comunidadeducativa c;
+
+/* Buscar y reemplazar @ por # en los email y cambiar los 'No tiene' por email del instituto*/
+SELECT  
+IF(c.EmailComunidad = 'No Tiene' ,
+"harnina#h.es",
+IFNULL(INSERT( c.EmailComunidad , INSTR( c.EmailComunidad , '@' ) , 1, '#' ), "harnina#h.es" )) 
+FROM comunidadeducativa c;

@@ -1,0 +1,6 @@
+Sum(columna)   /* Calcula la suma de las filas de la columna especificada. */
+Avg(columna)   /* Calcula la media de las filas de la columna especificada. */
+Count(*)       /* Nos proporciona el valor del número de filas de esa tabla. */
+Count(columna) /* Nos proporciona el valor del número de filas de esa tabla para esa columna. */
+Max(columna)   /* Nos indica cual es el valor máximo de esa columna. */
+Min(columna)   /* Nos indica cual es el valor mínimo de esa columna. */

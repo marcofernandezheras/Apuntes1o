@@ -1,0 +1,12 @@
+/* if(condición,verdadero,falso)  Retorna verdadero o falso dependiendo del valor de la condición.  */
+SELECT IF( 1 >2, 2, 3 );
+
+/* IFNULL(expr1,expr2) Si expr1 no es NULL, IFNULL() retorna expr1, 
+de otro modo retorna expr2. */
+SELECT IFNULL(1,0);     -> 1
+SELECT IFNULL(NULL,10); -> 10
+
+/* NULLIF(expr1,expr2) Retorna NULL si expr1 = expr2 es cierto, de otro modo retorna expr1 */
+SELECT NULLIF(1,1); -> NULL
+SELECT NULLIF(1,2); -> 1
+
