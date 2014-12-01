@@ -11,6 +11,7 @@ Teclalogia:
 Debuging:
 	f6  = ejecutar linea actual
 	f8  = resumir / continuar
+	f5  = entrar a funcion
 
 	ctrl + shift + d = display
 	ctrl + shift + i = inspeccionar

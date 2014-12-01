@@ -13,3 +13,4 @@ FROM comunidadeducativa c; -> 060-5
 /* INSTR(str,substr) Retorna la posición de la primera coincidencia de la subcadena substr en la cadena str. */
 SELECT INSTR( c.NombreComunidad , 'Carlos' ) 
 FROM comunidadeducativa c; -> número
+

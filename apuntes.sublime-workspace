@@ -36,13 +36,26 @@
 	"buffers":
 	[
 		{
-			"contents": "Sum(columna)   /* Calcula la suma de las filas de la columna especificada. */\nAvg(columna)   /* Calcula la media de las filas de la columna especificada. */\nCount(*)       /* Nos proporciona el valor del número de filas de esa tabla. */\nCount(columna) /* Nos proporciona el valor del número de filas de esa tabla para esa columna. */\nMax(columna)   /* Nos indica cual es el valor máximo de esa columna. */\nMin(columna)   /* Nos indica cual es el valor mínimo de esa columna. */\n",
-			"file": "Apuntes BD/04-Funciones",
-			"file_size": 0,
-			"file_write_time": 130612985251541064,
+			"file": "Apuntes BD/04-Funciones de columna",
 			"settings":
 			{
 				"buffer_size": 478,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Apuntes BD/05-Control de flujo",
+			"settings":
+			{
+				"buffer_size": 437,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Apuntes BD/06-Funciones de caracteres",
+			"settings":
+			{
+				"buffer_size": 629,
 				"line_ending": "Windows"
 			}
 		},
@@ -58,7 +71,7 @@
 			"file": "Apuntes BD/00-Consultas",
 			"settings":
 			{
-				"buffer_size": 8029,
+				"buffer_size": 9626,
 				"line_ending": "Unix"
 			}
 		}
@@ -66,16 +79,16 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 311.0,
 		"selected_items":
 		[
 			[
-				"bs3",
-				"Snippet: bs3-col-3"
-			],
-			[
 				"Package Control: ",
 				"Package Control: Install Package"
+			],
+			[
+				"bs3",
+				"Snippet: bs3-col-3"
 			],
 			[
 				"Package Control: in",
@@ -86,7 +99,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 575.0
+		"width": 400.0
 	},
 	"console":
 	{
@@ -123,6 +136,15 @@
 	],
 	"file_history":
 	[
+		"/C/Users/marco/AppData/Local/Temp/Comprobar_Vertical-1.java",
+		"/D/ProyectosEclipse/Programacion/evaluacion1/Tema6/src/TresNRaya/MostrarTablero.java",
+		"/C/Users/marco/AppData/Local/Temp/Comprobar_Vertical.java",
+		"/C/Users/marco/AppData/Local/Temp/ComprobarContigua-1.java",
+		"/C/Users/marco/AppData/Local/Temp/ComprobarContigua-2.java",
+		"/C/Users/marco/AppData/Local/Temp/Colocar_Posicion.java",
+		"/C/Users/marco/AppData/Local/Temp/ComprobarContigua.java",
+		"/E/3 n raya/TresNRaya/MostrarTablero.java",
+		"/C/Users/marco/Desktop/3 n raya/Felix/Iniciar_Jugada.java",
 		"/D/Apuntes/Apuntes Entorno/EmailJose.txt",
 		"/C/Users/marco/Desktop/turing/t/index.html",
 		"//databaseserver/shared files/DAM 2015/primero/Base de Datos/UT3/calendariokike.sql",
@@ -204,12 +226,12 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Apuntes BD/04-Funciones",
+					"file": "Apuntes BD/04-Funciones de columna",
 					"semi_transient": false,
 					"settings":
 					{
@@ -233,11 +255,69 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "Apuntes BD/05-Control de flujo",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 437,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								287,
+								287
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/SQL/SQL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Apuntes BD/06-Funciones de caracteres",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 629,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								338,
+								385
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/SQL/SQL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "Apuntes BD/02-Entidad-relacion",
 					"semi_transient": true,
 					"settings":
@@ -261,24 +341,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 4,
 					"file": "Apuntes BD/00-Consultas",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8029,
+						"buffer_size": 9626,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7367,
-								7367
+								8896,
+								8896
 							]
 						],
 						"settings":
@@ -286,10 +366,10 @@
 							"syntax": "Packages/SQL/SQL.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 3628.0,
+						"translation.y": 4046.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -326,6 +406,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 94.0
+	},
 	"output.find_results":
 	{
 		"height": 0.0

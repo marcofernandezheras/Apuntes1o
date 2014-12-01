@@ -321,3 +321,18 @@ IF(c.EmailComunidad = 'No Tiene' ,
 "harnina#h.es",
 IFNULL(INSERT( c.EmailComunidad , INSTR( c.EmailComunidad , '@' ) , 1, '#' ), "harnina#h.es" )) 
 FROM comunidadeducativa c;
+
+/* Contar DNI con la letra H */
+SELECT COUNT(c.DNIComunidad) 
+FROM comunidadeducativa c 
+where LOCATE('H',c.DNIComunidad ) != 0;
+
+/* Descomponer Email */
+SELECT c.EmailComunidad,LEFT(c.EmailComunidad, LOCATE("@",c.EmailComunidad) - 1) AS UserName, 
+MID(c.EmailComunidad,
+	(LOCATE("@",c.EmailComunidad) + 1),
+	(LOCATE(".",c.EmailComunidad) -1  - LOCATE("@",c.EmailComunidad) )) AS Server,
+RIGHT(c.EmailComunidad, LENGTH(c.EmailComunidad) - LOCATE(".",c.EmailComunidad) ) AS Dominio
+from comunidadeducativa c
+where c.EmailComunidad != "No tiene";
+
