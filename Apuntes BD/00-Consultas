@@ -336,3 +336,48 @@ RIGHT(c.EmailComunidad, LENGTH(c.EmailComunidad) - LOCATE(".",c.EmailComunidad) 
 from comunidadeducativa c
 where c.EmailComunidad != "No tiene";
 
+/* Comunidad educativa nacidos en año bisiesto */
+SELECT * from comunidadeducativa c
+where YEAR(c.FechaNacimientoComunidad)%4 = 0 
+and (
+	YEAR(c.FechaNacimientoComunidad) % 100 != 0 or 
+	YEAR(c.FechaNacimientoComunidad) % 400 = 0
+);
+
+/* comunidad educativa con 20 años */
+SELECT *
+FROM `comunidadeducativa`
+
+where YEAR(CURDATE()) 
+- 
+YEAR(`FechaNacimientoComunidad`) 
++ IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(`FechaNacimientoComunidad`,'%m-%d'), 0, -1) = 20;
+
+/* comunidad educativa con 20 años -> Alberto's Edition */
+SELECT *
+FROM `comunidadeducativa` c
+where TIMESTAMPDIFF(year,c.FechaNacimientoComunidad,NOW()) = 20;
+
+/* Nacidos en Diciembre */
+SELECT *
+FROM `comunidadeducativa` c
+where MONTH(c.FechaNacimientoComunidad) = 12;
+
+/* camel case inverso */
+SELECT  CONCAT(LCASE(LEFT(c.NombreComunidad,1)) , UCASE(MID(c.NombreComunidad,2)))
+FROM `comunidadeducativa` c;
+
+/* Formato europeo de fecha */
+SELECT  DATE_FORMAT(c.FechaNacimientoComunidad,'%d-%m-%Y')
+FROM `comunidadeducativa` c;
+
+/* Dia actual en formato Luciano */
+SELECT  CONCAT(d.NombreDia," ",DAYOFWEEK(NOW())-1," de ",CONCAT(UCASE(LEFT(m.NombreMes,1)) , LCASE(MID(m.NombreMes,2)))) as `Dia de hoy` from
+mes m, diasemana d
+where  
+MONTH(NOW()) = m.IdMes
+and DAYOFWEEK(NOW())-1 = d.IdDiaSemana;
+
+/* Nacidos en Viernes, Sabado, Domingo */
+SELECT  c.NombreComunidad from comunidadeducativa c
+where WEEKDAY(c.FechaNacimientoComunidad) in (4,5,6)

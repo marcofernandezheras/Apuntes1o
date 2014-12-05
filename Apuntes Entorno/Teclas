@@ -8,6 +8,7 @@ Teclalogia:
 
 	ctrl + f 		 = buscar / remplazar
 
+	ctrl + alt + h = buscar referencias
 Debuging:
 	f6  = ejecutar linea actual
 	f8  = resumir / continuar
