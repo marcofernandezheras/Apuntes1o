@@ -381,3 +381,43 @@ and DAYOFWEEK(NOW())-1 = d.IdDiaSemana;
 /* Nacidos en Viernes, Sabado, Domingo */
 SELECT  c.NombreComunidad from comunidadeducativa c
 where WEEKDAY(c.FechaNacimientoComunidad) in (4,5,6)
+
+
+/* 1.- Examen dificil */
+SELECT COUNT(*) AS `Dias de vacaciones en Navidad` 
+from tipodia t, mes m, calendario c
+where c.IdTipoDia = t.IdTipoDia
+and c.IdMes = m.IdMes
+and t.NombreTipoDia = "Vacaciones"
+and (m.NombreMes = "diciembre" or m.NombreMes = "enero")
+and c.NumeroDia BETWEEN  (if(m.NombreMes = "diciembre", 20, 1))   AND  (if(m.NombreMes = "diciembre", 31, 10));
+
+/* 2.- Examen dificil */
+SELECT  
+pr.NombrePrueba AS "Nombre de la prueba",
+co.NombreComunidad AS "Profesor",
+mo.NombreModulo AS "Nombre del módulo"
+from comunidadeducativa co, curso cu, evaluacion ev, prueba pr, modulo mo
+where pr.IdProfesor = co.IdComunidad
+and pr.IdModulo = mo.IdModulo
+and mo.Curso = cu.Curso
+and ev.IdEvaluacion = 1
+and cu.Curso = 1
+and pr.FechaRealizacion BETWEEN ev.FechaInicio AND ev.FechaFin;
+
+/* 3.- Examen dificil */
+SELECT 
+mo.NombreModulo AS "Módulo",
+pr.NombrePrueba AS "Nombre de la prueba",
+DATE_FORMAT(pr.FechaRealizacion,'%d-%m-%Y') AS "Fecha de realización",
+co.ApellidosComunidad AS "Apellidos del alumno",
+co.NombreComunidad AS "Nombre del alumno",
+n.Nota AS "Nota obtenida"
+FROM
+mes me, nota n, modulo mo, comunidadeducativa co, prueba pr, curso cu
+where pr.IdModulo = mo.IdModulo
+and mo.Curso = cu.Curso
+and n.IdAlumno = co.IdComunidad
+and me.NombreMes = "diciembre"
+and cu.Curso = 1
+ORDER by 1,2,3,4,5,6;

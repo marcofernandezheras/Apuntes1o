@@ -52,10 +52,7 @@
 			}
 		},
 		{
-			"contents": "/* CONCAT(str1,str2,...) Retorna NULL si algún argumento es NULL */\nSELECT CONCAT(... , ... , ...)\n\n/* INSERT(str,pos,len,newstr) Retorna la cadena str, \ncon la subcadena comenzando en la posición pos y len caracteres ¡¡REEMPLAZA!!\npor la cadena newstr. Retorna la cadena original si pos no está entre la longitud de la cadena */\n\nSELECT INSERT( c.`CódigoPostalComunidad` , 4, 1, '-' ) AS 'C.P'\nFROM comunidadeducativa c; -> 060-5\n\n\n\n/* INSTR(str,substr) Retorna la posición de la primera coincidencia de la subcadena substr en la cadena str. */\nSELECT INSTR( c.NombreComunidad , 'Carlos' ) \nFROM comunidadeducativa c; -> número\n\n",
 			"file": "Apuntes BD/06-Funciones de caracteres",
-			"file_size": 654,
-			"file_write_time": 130619078365530257,
 			"settings":
 			{
 				"buffer_size": 630,
@@ -71,34 +68,10 @@
 			}
 		},
 		{
-			"file": "/C/Users/marco/Downloads/Comprobar_Vertical.java",
-			"settings":
-			{
-				"buffer_size": 1308,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/marco/Downloads/Comprobar_Vertical(1).java",
-			"settings":
-			{
-				"buffer_size": 1308,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/marco/Desktop/AroundMe.java",
-			"settings":
-			{
-				"buffer_size": 3374,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "Apuntes Entorno/Teclas",
 			"settings":
 			{
-				"buffer_size": 410,
+				"buffer_size": 441,
 				"line_ending": "Windows"
 			}
 		}
@@ -163,8 +136,10 @@
 	],
 	"file_history":
 	[
-		"/E/3 n raya/TresNRaya/Comprobar_Vertical.java",
+		"/C/Users/marco/Downloads/Comprobar_Vertical.java",
+		"/C/Users/marco/Downloads/Comprobar_Vertical(1).java",
 		"/C/Users/marco/Desktop/AroundMe.java",
+		"/E/3 n raya/TresNRaya/Comprobar_Vertical.java",
 		"/D/Apuntes/Apuntes Entorno/Teclas",
 		"/C/Users/marco/Desktop/dump.sql",
 		"/C/Users/marco/AppData/Local/Temp/Comprobar_Vertical-1.java",
@@ -257,7 +232,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -286,7 +261,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -315,7 +290,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -344,7 +319,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -360,8 +335,8 @@
 						"selection":
 						[
 							[
-								11482,
-								11482
+								10454,
+								10454
 							]
 						],
 						"settings":
@@ -369,113 +344,27 @@
 							"syntax": "Packages/SQL/SQL.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 4942.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "/C/Users/marco/Downloads/Comprobar_Vertical.java",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1308,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								524,
-								524
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "/C/Users/marco/Downloads/Comprobar_Vertical(1).java",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1308,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								70,
-								77
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/C/Users/marco/Desktop/AroundMe.java",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3374,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 210.0,
+						"translation.y": 4734.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 4,
 					"file": "Apuntes Entorno/Teclas",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 410,
+						"buffer_size": 441,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								410,
-								410
+								289,
+								289
 							]
 						],
 						"settings":
@@ -487,7 +376,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
