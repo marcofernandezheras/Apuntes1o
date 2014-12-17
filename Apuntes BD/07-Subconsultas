@@ -1,0 +1,9 @@
+/* SELECT ..... WHERE  valor  operador ( SELECT .....) */
+
+/* Modulo con menor número de horas */
+SELECT m.NombreModulo from modulo m
+where m.HorasSemanales =  (Select MIN(m.HorasSemanales) from modulo m);
+
+/* Modulos superior a la media de horas semanales*/
+SELECT m.NombreModulo from modulo m
+where m.HorasSemanales > (SELECT AVG(m.HorasSemanales) from modulo m)

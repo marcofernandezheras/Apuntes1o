@@ -382,6 +382,29 @@ and DAYOFWEEK(NOW())-1 = d.IdDiaSemana;
 SELECT  c.NombreComunidad from comunidadeducativa c
 where WEEKDAY(c.FechaNacimientoComunidad) in (4,5,6)
 
+/* 1.- Examen "facil": ¿Cuantos alumnos de una poblacion determinada?*/
+Select COUNT(*) 
+from comunidadeducativa c , alumno a, municipio m, codigopostal cod
+where c.IdComunidad = a.IdAlumno
+and c.`CódigoPostalComunidad` = cod.CodigoPostal
+and m.IdMunicipio = cod.IdMunicipio
+and m.NombreMunicipio = 'almendralejo';
+
+/* 2.- Examen "facil": Profesores de un curso */
+Select DISTINCT c.NombreComunidad 
+from comunidadeducativa c, curso cu, modulo m, imparte im
+where c.IdComunidad = im.IdProfesor
+and im.IdModulo = m.IdModulo
+and m.Curso = 1;
+
+/* 3.- Examen "facil": dias de clase 'dia normal' en un dia de semana para un mes determinado */
+Select COUNT(*) from tipodia t, calendario c, diasemana d, mes m
+where c.IdDiaSemana = d.IdDiaSemana
+and c.IdTipoDia = t.IdTipoDia
+and c.IdMes = m.IdMes
+and t.NombreTipoDia = "Dia normal"
+and m.MesFances = "décembre"
+and d.DiaFrances = "Lundi";
 
 /* 1.- Examen dificil */
 SELECT COUNT(*) AS `Dias de vacaciones en Navidad` 
@@ -389,8 +412,7 @@ from tipodia t, mes m, calendario c
 where c.IdTipoDia = t.IdTipoDia
 and c.IdMes = m.IdMes
 and t.NombreTipoDia = "Vacaciones"
-and (m.NombreMes = "diciembre" or m.NombreMes = "enero")
-and c.NumeroDia BETWEEN  (if(m.NombreMes = "diciembre", 20, 1))   AND  (if(m.NombreMes = "diciembre", 31, 10));
+and (m.NombreMes = "diciembre" or m.NombreMes = "enero");
 
 /* 2.- Examen dificil */
 SELECT  
@@ -400,7 +422,6 @@ mo.NombreModulo AS "Nombre del módulo"
 from comunidadeducativa co, curso cu, evaluacion ev, prueba pr, modulo mo
 where pr.IdProfesor = co.IdComunidad
 and pr.IdModulo = mo.IdModulo
-and mo.Curso = cu.Curso
 and ev.IdEvaluacion = 1
 and cu.Curso = 1
 and pr.FechaRealizacion BETWEEN ev.FechaInicio AND ev.FechaFin;
@@ -421,3 +442,98 @@ and n.IdAlumno = co.IdComunidad
 and me.NombreMes = "diciembre"
 and cu.Curso = 1
 ORDER by 1,2,3,4,5,6;
+
+/* Alumnos que han faltado hoy */
+SELECT CONCAT(c.ApellidosComunidad,", ", c.NombreComunidad)
+from falta f, comunidadeducativa c
+where f.IdAlumno = c.IdComunidad
+and f.FechaFalta = DATE(NOW());
+
+/* Alumnos que han faltado todo el dia de hoy*/
+SELECT CONCAT(c.ApellidosComunidad,", ", c.NombreComunidad), fr.IdFranja
+from falta f, comunidadeducativa c, franjahoraria fr
+where f.IdAlumno = c.IdComunidad
+and f.FechaFalta = DATE(NOW())
+and f.IdFranjaHoraria = 7;
+
+
+/*******************************************************************************************/
+/* Modulo al que han faltado hoy los alumnos de 1º */
+SELECT c.ApellidosComunidad, c.NombreComunidad, m.NombreModulo, f.FechaFalta
+from falta f, comunidadeducativa c, modulo m, horario h
+where 
+/**---------------- relacion faltas-otras_tablas---------------- **/
+ f.IdAlumno = c.IdComunidad
+and f.IdFranjaHoraria = h.IdFranja
+
+/**------------------------ dia de hoy ------------------------**/
+and date(f.FechaFalta) = date(NOW())
+
+/**---------------- relacion modulo-horario ----------------**/
+and m.IdModulo = h.IdModulo
+and h.IdDiaSemana = (WEEKDAY(NOW()) + 1) /* <--- arreglar desfase, WEEKDAY empieza en 0 */
+
+and m.Curso = 1;
+
+/*******************************************************************************************/
+
+/* Alumnmos con base de datos convalidada*/
+SELECT c.ApellidosComunidad, c.NombreComunidad from
+convalida con, comunidadeducativa c, modulo m
+where
+con.IdAlumno = c.IdComunidad
+and con.IdModulo = m.IdModulo
+and con.AprobadoCursoAnterior = 0
+and m.NombreModulo like "base%dato%"
+
+/* Modulo con menor número de horas */
+SELECT m.NombreModulo from modulo m
+where m.HorasSemanales =  (Select MIN(m.HorasSemanales) from modulo m);
+
+/* Modulos superior a la media de horas semanales*/
+SELECT m.NombreModulo from modulo m
+where m.HorasSemanales > (SELECT AVG(m.HorasSemanales) from modulo m)
+
+
+/* 9.	Los alumnos que faltaron en Noviembre en el módulo Base de datos. */
+SELECT c.NombreComunidad, f.FechaFalta 
+from falta f, comunidadeducativa c
+where 
+f.IdAlumno = c.IdComunidad
+and MONTH(FechaFalta) = 11;
+
+/* 10.	Los alumnos que faltaron en Octubre en jornada completa. */
+SELECT * from falta f, comunidadeducativa c
+where 
+f.IdAlumno = c.IdComunidad
+and MONTH(FechaFalta) = 11
+and f.IdFranjaHoraria = 7;
+
+/* 11.	Total de faltas a jornada completa en Diciembre. */
+SELECT count(*) from falta f, comunidadeducativa c
+where 
+f.IdAlumno = c.IdComunidad
+and MONTH(FechaFalta) = 12
+and f.IdFranjaHoraria = 7;
+
+/* 12.	Cuantos alumnos tienen  aprobado del año anterior un módulo determinado. */
+SELECT count(*) from
+convalida con, comunidadeducativa c, modulo m
+where
+con.IdAlumno = c.IdComunidad
+and con.IdModulo = m.IdModulo
+and con.AprobadoCursoAnterior = 1
+and m.NombreModulo like "%marc%";
+
+/* 13.	¿Qué días de la semana se imparte un módulo?. */
+SELECT DISTINCT d.NombreDia from
+modulo m, horario h, diasemana d
+where h.IdModulo = m.IdModulo
+and m.NombreModulo like "%marca%"
+and h.IdDiaSemana = d.IdDiaSemana;
+
+/* 14.	El módulo con mayor número de falta en un mes determinado */
+/* 15.	El alumno que más faltó en un mes determinado. */
+/* 16.	Cuantos fines de semanas (Sábados y Domingo) tiene un mes determinado */
+/* 17.	El mes con mayor número de días lectivos. */
+/* 18.	El mes de inicio y el último mes de una evaluación determinada. */
