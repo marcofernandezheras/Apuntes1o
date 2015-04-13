@@ -1,0 +1,596 @@
+
+
+-- Volcando estructura para función cicloinformatica1415.aula
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `aula`(`numeroaula` INT) RETURNS varchar(25) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+Declare miCurso int default 0;
+declare mensaje varchar(25) default "Aula desconocida";
+
+Select c.Curso INTO miCurso
+from curso c where c.Aula = numeroaula;
+
+IF miCurso = 1 then set mensaje = "Primero";
+ELSEIF miCurso = 2 then set mensaje = "Segundo";
+END IF;
+
+return mensaje;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.aulaCase
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `aulaCase`(`numeroAula` INT) RETURNS varchar(50) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+Declare miCurso int default 0;
+declare mensaje varchar(25) default "Aula desconocida";
+
+Select c.Curso INTO miCurso
+from curso c where c.Aula = numeroaula;
+
+CASE miCurso
+	when 1 then set mensaje = "Primero";
+	when 2 then set mensaje = "Segundo";
+	ELSE set mensaje = "Otro curso";
+end Case;
+
+return mensaje;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.buscapalabra
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `buscapalabra`(`frase` VARCHAR(150), `palabra` vARCHAR(150)) RETURNS int(11)
+BEGIN
+declare resultado int default 0;
+declare indice int default 1;
+declare busqueda varchar(152);
+
+
+loopA: LOOP
+    SET indice = LOCATE(palabra,frase,indice);
+    IF indice != 0 THEN
+    	set resultado = resultado + 1;
+    	set indice = indice +1 ;
+      ITERATE loopA;
+    END IF;
+    LEAVE loopA;
+  END LOOP loopA;
+
+return resultado;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.camelcase
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `camelcase`(`frase` vARCHAR(150)) RETURNS varchar(150) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+
+declare retorno varchar(150) default "";
+declare cadena varchar(150);
+declare token varchar(150);
+declare subCadena varchar(150);
+declare posicion int default 0;
+declare blanco int default 0;
+declare noMayuscula int default 0;
+
+set cadena = TRIM(BOTH " " FROM LOWER(frase));
+set posicion = INSTR(cadena, " ");
+set retorno = SUBSTRING(cadena,1,posicion-1);
+set subCadena = SUBSTRING(cadena,posicion+1);
+
+
+WHILE posicion <> 0 DO
+set blanco = INSTR(subCadena, " ");
+
+set token = SUBSTRING(subCadena,1,blanco-1);
+set token = CONCAT(UCASE(LEFT(token,1)) , LCASE(MID(token,2)));
+set retorno = Concat(retorno,token);
+set subCadena = SUBSTRING(subCadena,blanco+1);
+set posicion = INSTR(subCadena, " ");
+
+/* Token final */
+if posicion = 0 then
+set subCadena = CONCAT(UCASE(LEFT(subCadena,1)) , LCASE(MID(subCadena,2)));
+set retorno = Concat(retorno,subCadena);
+end if;
+/* END Token final*/
+
+END WHILE;
+
+return retorno;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.capital
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `capital`(`palabra` VARCHAR(150)) RETURNS varchar(150) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+return CONCAT(UCASE(LEFT(palabra,1)) , LCASE(MID(palabra,2)));
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.ciudad
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `ciudad`(`cp` VARCHAR(5)) RETURNS varchar(100) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+return (SELECT concat( capital(m.NombreMunicipio), "(", capital(p.NombreProvincia), ")") from codigopostal cp, municipio m, provincia p
+where cp.IdMunicipio = m.IdMunicipio
+and m.CodigoProvincia = p.CodigoProvincia
+and cp.CodigoPostal = cp limit 0,1);
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.CiudadCapital
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `CiudadCapital`(`ciudad` vaRCHAR(150)) RETURNS varchar(150) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+
+declare retorno varchar(150) default "";
+declare cadena varchar(150);
+declare token varchar(150);
+declare subCadena varchar(150);
+declare posicion int default 0;
+declare blanco int default 0;
+declare noMayuscula int default 0;
+
+set cadena = CONCAT(UCASE(LEFT(ciudad,1)) , LCASE(MID(ciudad,2)));
+set posicion = INSTR(cadena, " ");
+
+if posicion > 0 then
+set retorno = SUBSTRING(cadena,1,posicion-1);
+set subCadena = SUBSTRING(cadena,posicion+1);
+ELSE
+set retorno = cadena;
+end if;
+
+WHILE posicion <> 0 DO
+set blanco = INSTR(subCadena, " ");
+
+set token = SUBSTRING(subCadena,1,blanco-1);
+
+Select UCASE(token) in("EL","LA","UN","UNA","LOS","LAS","UNOS","UNAS","A","ANTE","BAJO","CABE","CON","CONTRA","DE","DEL",
+"DESDE","DURANTE","EN","ENTRE","HACIA","HASTA","MEDIANTE","PARA","POR","SEGÚN","SIN","SO","SOBRE",
+"TRAS") into noMayuscula;
+
+if noMayuscula = 0 then
+set token = CONCAT(UCASE(LEFT(token,1)) , LCASE(MID(token,2)));
+end if;
+
+set retorno = Concat(retorno," ",token);
+set subCadena = SUBSTRING(subCadena,blanco+1);
+set posicion = INSTR(subCadena, " ");
+
+/* Token final */
+if posicion = 0 then
+Select UCASE(subCadena) in("EL","LA","UN","UNA","LOS","LAS","UNOS","UNAS","A","ANTE","BAJO","CABE","CON","CONTRA","DE",
+"DESDE","DURANTE","EN","ENTRE","HACIA","HASTA","MEDIANTE","PARA","POR","SEGÚN","SIN","SO","SOBRE",
+"TRAS") into noMayuscula;
+
+if noMayuscula = 0 then
+set subCadena = CONCAT(UCASE(LEFT(subCadena,1)) , LCASE(MID(subCadena,2)));
+end if;
+
+set retorno = Concat(retorno," ",subCadena);
+end if;
+/* END Token final*/
+
+END WHILE;
+
+return retorno;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.convalida
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `convalida`(`dni` VARCHAR(50), `nombremodulo` VARCHAR(150)) RETURNS varchar(2) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+
+declare mensaje varchar(2) default "No";
+
+SELECT "SI" into mensaje from comunidadeducativa c, convalida co, modulo m
+where c.IdComunidad = co.IdAlumno
+and co.IdModulo = m.IdModulo
+and c.DNIComunidad = dni
+and m.NombreModulo = nombremodulo;
+
+return mensaje;
+
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.CuentaPalabra
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `CuentaPalabra`(`ffrase` VARCHAR(150)) RETURNS int(11)
+BEGIN
+declare resultado int default 1;
+declare indice int default 1;
+declare frase varchar(150);
+set frase = TRIM(BOTH " " FROM ffrase);
+if frase = "" then return 0; end if;
+
+REPEAT
+	set frase = REPLACE(frase, '  ', ' ');
+UNTIL (LOCATE("  ",frase) = 0) END REPEAT;
+
+label1: LOOP
+    SET indice = LOCATE(" ",frase,indice);
+    IF indice != 0 THEN
+    	set resultado = resultado + 1;
+    	set indice = indice +1 ;
+      ITERATE label1;
+    END IF;
+    LEAVE label1;
+  END LOOP label1;
+return resultado;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.cuentapalabrados
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `cuentapalabrados`(`frase` vARCHAR(150)) RETURNS int(11)
+BEGIN
+declare resultado int default 0;
+declare contar int default 0;
+declare indice int default 1;
+declare caracter varchar(1);
+declare longitud int;
+
+REPEAT
+   set caracter = SUBSTRING(frase,indice);
+   
+	WHILE (caracter != " " and indice <= LENGTH(frase)) DO
+		set indice = indice + 1;
+		set caracter = SUBSTRING(frase,indice,1);
+		set contar = 1;
+	END WHILE;
+	
+	IF contar = 1 THEN
+		set resultado = resultado +1;
+	END IF;
+	
+	WHILE (caracter = " " and indice <= LENGTH(frase)) DO
+		set indice = indice + 1;
+		set caracter = SUBSTRING(frase,indice,1);
+		set contar = 0;
+	END WHILE;
+
+UNTIL indice > LENGTH(frase) END REPEAT;   
+
+return resultado;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.cuentaVocales
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `cuentaVocales`(`frase` vARCHAR(150)) RETURNS int(11)
+BEGIN
+declare resultado int default 0;
+declare indice int default 1;
+
+if frase = "" then return 0; end if;
+
+loopA: LOOP
+    SET indice = LOCATE("a",frase,indice);
+    IF indice != 0 THEN
+    	set resultado = resultado + 1;
+    	set indice = indice +1 ;
+      ITERATE loopA;
+    END IF;
+    LEAVE loopA;
+  END LOOP loopA;
+
+set indice = 1;
+
+loopE: LOOP
+    SET indice = LOCATE("e",frase,indice);
+    IF indice != 0 THEN
+    	set resultado = resultado + 1;
+    	set indice = indice +1 ;
+      ITERATE loopE;
+    END IF;
+    LEAVE loopE;
+  END LOOP loopE;
+
+set indice = 1;
+
+loopI: LOOP
+    SET indice = LOCATE("i",frase,indice);
+    IF indice != 0 THEN
+    	set resultado = resultado + 1;
+    	set indice = indice +1 ;
+      ITERATE loopI;
+    END IF;
+    LEAVE loopI;
+  END LOOP loopI;
+
+
+set indice = 1;
+
+loopO: LOOP
+    SET indice = LOCATE("o",frase,indice);
+    IF indice != 0 THEN
+    	set resultado = resultado + 1;
+    	set indice = indice +1 ;
+      ITERATE loopO;
+    END IF;
+    LEAVE loopO;
+  END LOOP loopO;
+  
+set indice = 1;
+
+loopU: LOOP
+    SET indice = LOCATE("u",frase,indice);
+    IF indice != 0 THEN
+    	set resultado = resultado + 1;
+    	set indice = indice +1 ;
+      ITERATE loopU;
+    END IF;
+    LEAVE loopU;
+  END LOOP loopU;  
+  
+return resultado;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.curso_delete
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `curso_delete`(`ccurso` varCHAR(1)) RETURNS varchar(15) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+declare exitoso int;
+declare mensaje varchar(15);
+Delete from curso where curso.Curso = ccurso;
+set exitoso = ROW_COUNT();
+
+if(exitoso > 0) then 
+	set mensaje = "Delete exitoso";
+else
+	set mensaje = "Delete fallido";
+end if;
+
+return mensaje;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.curso_update_aula
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `curso_update_aula`(`ccurso` vaRCHAR(1), `nuevoaula` TINYINT(1)) RETURNS varchar(15) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+declare exitoso int;
+declare mensaje varchar(15);
+update curso SET curso.Aula = nuevoaula where curso.Curso = ccurso;
+set exitoso = ROW_COUNT();
+
+if(exitoso > 0) then 
+	set mensaje = "Update exitoso";
+else
+	set mensaje = "Update fallido";
+end if;
+
+return mensaje;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.decimalLuciano
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `decimalLuciano`(`numero` fLOAT, `decimales` INT) RETURNS varchar(150) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN 
+DECLARE cadena varchar(50) DEFAULT "";
+DECLARE auxiliar varchar(50) DEFAULT "";
+DECLARE valorFinal FLOAT DEFAULT 0; 
+DECLARE posicion INT DEFAULT 0; 
+
+SET cadena = numero;   
+SET posicion = INSTR(cadena , "."); 
+
+SET auxiliar = SUBSTRING(cadena, 1, (decimales+posicion));
+RETURN auxiliar; 
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.diviresta
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `diviresta`(`n1` INT, `n2` INT) RETURNS int(11)
+BEGIN
+declare resultado int default n1;
+declare contador int default 0;
+
+WHILE resultado >= n2 DO
+    set resultado = resultado - n2;
+    SET contador = contador + 1;
+END WHILE;
+
+return contador;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.edad
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `edad`(`fecha` DATE) RETURNS int(11)
+BEGIN
+return YEAR(CURDATE()) 
+- 
+YEAR(fecha) 
++ IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(fecha,'%m-%d'), 0, -1);
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.fechahoy
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `fechahoy`(`fecha` DATE) RETURNS varchar(150) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+declare mensaje varchar(150);
+SELECT  CONCAT(d.NombreDia," ",DAYOFWEEK(fecha)-1," de ",CONCAT(UCASE(LEFT(m.NombreMes,1)) , LCASE(MID(m.NombreMes,2)))) into mensaje from
+mes m, diasemana d
+where  
+MONTH(fecha) = m.IdMes
+and DAYOFWEEK(fecha)-1 = d.IdDiaSemana;
+return mensaje;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.franja
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `franja`(`hora` TIME) RETURNS varchar(25) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+
+Declare idFranja int default -1;
+declare mensaje varchar(50) default "Fuera del horario";
+
+SELECT min(f.IdFranja) into idFranja from franjahoraria f where hora BETWEEN f.HoraInicio and f.HoraFinal;
+
+CASE idFranja
+	when 0 then set mensaje = "Recreo";
+	when 1 then set mensaje = "Primera hora";
+	when 2 then set mensaje = "Segunda hora";
+	when 3 then set mensaje = "Tercera hora";
+	when 4 then set mensaje = "Cuarta hora";
+	when 5 then set mensaje = "Quinta hora";
+	when 6 then set mensaje = "Sexta hora";
+	when 7 then set mensaje = "En los cinco minutejos";
+	else set mensaje = "Fuera del horario";
+end case;
+
+return mensaje;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.hello
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `hello`() RETURNS varchar(50) CHARSET utf8 COLLATE utf8_unicode_ci
+    NO SQL
+BEGIN
+DECLARE edad int DEFAULT 20;
+RETURN "lol";
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.helloworld
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `helloworld`() RETURNS varchar(50) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+DECLARE edad int DEFAULT 10;
+DECLARE mensaje VARCHAR(50) default "Menor de edad";
+IF edad >= 18 then
+set mensaje = "Mayor de edad";
+end if;
+RETURN mensaje;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.horahoy
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `horahoy`(`hora` TIME) RETURNS varchar(150) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+return concat(
+"Son las ",
+HOUR(hora),
+" horas y ",
+MINUTE(hora),
+" minutos y ",
+SECOND(hora),
+" segundos"
+);
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.loopea
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `loopea`() RETURNS int(11)
+BEGIN
+DECLARE p1 int default 0;
+label1: LOOP 
+set p1 = p1 + 1;
+if p1 < 10 then Iterate label1;
+end if;
+leave label1;
+end loop label1;
+return p1;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.multisuma
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `multisuma`(`n1` INT, `n2` INT) RETURNS int(11)
+BEGIN
+declare resultado int default 0;
+declare contador int default 0;
+REPEAT
+	 set resultado = resultado + n1;
+    SET contador = contador + 1;
+UNTIL contador >= n2 END REPEAT;
+
+return resultado;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.test
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `test`(`ffrase` vARCHAR(150)) RETURNS varchar(150) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+declare resultado int default 1;
+declare indice int default 1;
+declare frase varchar(150);
+set frase = TRIM(BOTH " " FROM ffrase);
+if frase = "" then return 0; end if;
+
+REPEAT
+	set frase = REPLACE(frase, "  ", " ");
+UNTIL (LOCATE("  ",frase) = 0) END REPEAT;
+
+return frase;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.tipoDia
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `tipoDia`(`fecha` DATE) RETURNS varchar(50) CHARSET utf8 COLLATE utf8_unicode_ci
+BEGIN
+declare tipo varchar(50) default "Dia no valido";
+SELECT t.NombreTipoDia into tipo from calendario c, tipodia t
+where c.IdTipoDia = t.IdTipoDia
+and c.IdMes = MONTH(fecha)
+and c.IdDiaSemana - 1 = WEEKDAY(fecha)
+and c.NumeroDia = DAYOFMONTH(fecha);
+return tipo;
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para función cicloinformatica1415.totalMunicipioscomunidad
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `totalMunicipioscomunidad`(`nombrecomunidad` vARCHAR(50)) RETURNS int(11)
+BEGIN
+declare municipios int default 0;
+Select count(*) into municipios from comunidadautonoma c, provincia p, municipio m
+where p.IdComunidad = c.IdComunidad
+and m.CodigoProvincia = p.CodigoProvincia
+and c.NombreComunidad = nombrecomunidad;
+
+return municipios;
+END//
+

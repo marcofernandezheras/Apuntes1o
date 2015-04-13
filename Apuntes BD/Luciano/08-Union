@@ -1,0 +1,17 @@
+/* UNION - Union de consultas, las filas repetidas se descartan */
+SELECT 1,null
+UNION
+SELECT 2,null;
+
+SELECT 1,null
+UNION
+SELECT 2,null
+UNION
+SELECT 1,null
+UNION
+SELECT 2,null
+
+/* UNION ALL - Union de consultas, todas las filas */
+SELECT 1,null
+UNION ALL
+SELECT 1,null;

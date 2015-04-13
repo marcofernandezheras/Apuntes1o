@@ -1,0 +1,12 @@
+/* Insertar datos en las tablas */
+
+/*
+INSERT INTO nombre_tabla (nombreColumna, nombreColumna...) VALUES (valor, valor...)
+*/
+INSERT INTO cicloinformatica1415.alumno
+(IdAlumno, Curso, Repetidor)
+VALUES(0, '', 0);
+
+
+/* Insertar resuldato de un select */
+INSERT INTO imparte (IdModulo,IdProfesor)  SELECT IdModulo,CodigoProfesor from modulo;

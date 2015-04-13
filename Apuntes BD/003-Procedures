@@ -1,0 +1,216 @@
+USE `cicloinformatica1415`;
+
+
+-- Volcando estructura para procedimiento cicloinformatica1415.altacurso
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `altacurso`(IN `nuevocurso` VARCHAR(1), IN `aula` TINYINT)
+BEGIN
+INSERT INTO curso
+	(Curso, Aula)
+	VALUES (nuevocurso, aula);
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para procedimiento cicloinformatica1415.cambiaAula
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `cambiaAula`(IN `ccurso` VARCHAR(50), IN `aaula` INT, OUT `mensaje` vARCHAR(50))
+BEGIN
+declare existe varchar(1) default 0;
+
+if aaula BETWEEN 1 and 99 then
+	
+	if (SELECT count(*)  from curso c where c.Curso = ccurso) > 0 then		
+	
+		SELECT c.Curso into existe from curso c where c.Aula = aaula;
+		if existe = 0 then
+			UPDATE curso SET Aula=aaula WHERE curso.Curso = ccurso;
+			if ROW_COUNT() > 0 
+				then set mensaje = "Aula cambiada con exito";
+			else
+				set mensaje = "Error en la BBDD";
+			end if; /* ROW_COUNT() > 0 */		
+		else
+		set mensaje = concat("Ese aula ya tiene el cuso ",existe);
+		end if; /* existe = 0 */
+	
+	else
+		set mensaje = "No existe ese curso";
+	end if;/*cursoExiste != 0*/	
+	
+else
+	set mensaje = "Aula invalida";
+end if; /*aaula BETWEEN 1 and 99*/
+
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para procedimiento cicloinformatica1415.cambiarnota
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `cambiarnota`(IN `iidAlumno` INT, IN `iidPrueba` INT, IN `nnota` DECIMAL(5,2), OUT `mensaje` INT)
+BEGIN
+if (iidAlumno != null) then
+	if (iidPrueba != null) then 
+		if (nnota != null) then
+			if (nnota BETWEEN 0 and 10) then
+				if ((SELECT COUNT(*) from prueba p where p.IdPrueba = iidPrueba) > 0) then
+					if ((SELECT COUNT(*) from nota n where n.IdPrueba = iidPrueba) > 0) then
+						if ((SELECT COUNT(*) from alumno a where a.IdAlumno = iidAlumno) > 0) then
+							if ((Select count(*) from nota n where n.IdPrueba = iidPrueba and n.IdAlumno = iidAlumno) > 0) then
+								UPDATE nota SET Nota = nnota WHERE n.IdPrueba = iidPrueba and n.IdAlumno = iidAlumno;
+								if (ROW_COUNT() > 0) then
+									set mensaje = "Nota actualizada con exito";
+								else /* No se actualizo nada */
+									set mensaje = "Error en BBDD";
+								end if;
+							else /* No hay alumno con esa prueba en nota */
+								set mensaje = "No exite ese alumno para esa prueba";
+							end if;	
+						else /* Alumno no esta en tabla alumno */
+							set mensaje = "No exite ese alumno";
+						end if;	
+					else /* Prueba no esta en tabla nota */
+						set mensaje = "No se ha evaluado esa prueba";
+					end if;	
+				else /* Prueba no esta en tabla prueba */
+					set mensaje = "No existe es prueba";
+				end if;					
+			else /* nota < 0 || nota > 10 */
+				set mensaje = "Nota no valida";
+			end if;
+		else /* nnota == null*/
+			set mensaje = "Nota no puede ser nula";
+		end if;
+	else /* iidPrueba == null*/
+		set mensaje = "Prueba no puede ser nula";
+	end if;
+else /* iidAlumno == null*/
+	set mensaje = "Alumno no puede ser nulo";
+end if;	
+	
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para procedimiento cicloinformatica1415.ingresarFalta
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ingresarFalta`(IN `idalumno` INT, IN `idFranja` INT, IN `fecha` DATE, OUT `mensaje` VARCHAR(50))
+BEGIN
+declare tipoDeDia int default 0;
+
+if idalumno != null then
+	if idFranja != null then
+		if fecha != null then
+			if (YEAR(fecha) BETWEEN 2014 and 2015) then
+				if ((MONTH(fecha) > 9) or (MONTH(fecha) BETWEEN 1 and 7)) then
+					SELECT t.IdTipoDia into tipoDeDia from tipodia t, calendario c where c.IdTipoDia = t.IdTipoDia and c.IdMes =  1 and c.NumeroDia = 15;
+					if tipoDeDia = 6 then
+						if (SELECT count(*) from alumno a  where a.IdAlumno = idalumno) > 0 then
+							if (SELECT count(*) from franjahoraria f where f.IdFranja = idFranja) > 0 then
+								INSERT INTO falta	(IdAlumno, IdFranjaHoraria, FechaFalta) VALUES (idalumno, idFranja, fecha);
+								if ROW_COUNT() > 0 then set mensaje = "Falta insertada"; else set mensaje = "Error en BBDD"; end if;
+							else
+								set mensaje = "La franja horaria no existe";
+							end if;/* Franja horaria existe*/
+						else
+							set mensaje = "El alumno no existe";
+						end if; /* Alumno existe */
+					else
+						set mensaje = "No se puede poner falta en un dia no lectivo";
+					end if; /* Tipo de dia valido */
+				else
+					set mensaje = "Mes no valido";
+				end if; /* Mes valido */
+			else
+				set mensaje = "Año no valido";
+			end if; /* Año valido */
+		else
+			set mensaje = "fecha no puede ser null";
+		end if; /* fecha != null */
+	else
+		set mensaje = "idFranja no puede ser null";
+	end if;/* idFranja != null */
+else
+	set mensaje = "idalumno no puede ser null";
+end if;/* idalumno != null */
+
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para procedimiento cicloinformatica1415.PonerNota
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PonerNota`(IN `pruebaId` TINYINT, IN `alumnoId` tinYINT, IN `notaParametro` INT, OUT `mensaje` varcHAR(50))
+BEGIN
+if(SELECT count(*) from prueba p, alumno a where p.IdPrueba=pruebaId and a.IdAlumno=alumnoId)>0 then
+	if notaParametro BETWEEN 1 and 10 then
+		if(SELECT count(*) from nota n where pruebaId=n.IdPrueba and alumnoId = n.idAlumno)=0 then 
+			insert nota  (idPrueba, IdAlumno, Nota)  values (pruebaId, alumnoId, notaParametro);
+			set mensaje = "la nota se ha puesto con éxito";
+		else 
+			set mensaje =concat("alumno repetido en la prueba: ", (Select p.NombrePrueba from prueba p where pruebaId=p.IdPrueba));
+		end if; /*comprobador de alumnos repetidos*/
+		
+	else
+		set mensaje = "esa nota no se puede poner";
+	end if;/*comprobador de la calificacion*/
+	
+else
+ 	set mensaje = "los datos no son válidos";
+end if;/*comprobador de prueba y alumno existentes*/
+
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para procedimiento cicloinformatica1415.RegistrarFaltaBis
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RegistrarFaltaBis`(IN `DiaParametro` date, IN `AlumnoId` tinyiNT, IN `FranjaId` tinYINT, OUT `Mensaje` varCHAR(50))
+BEGIN
+if (SELECT count(*) FROM calendario c where day(DiaParametro)=c.NumeroDia and MONTH(DiaParametro)=c.IdMes and year(DiaParametro)=year(now()) and c.IdTipoDia=6)>0 then
+	if(SELECT count(*) from alumno a where AlumnoId =a.IdAlumno)>0 then 
+		if(SELECT count(*) from franjahoraria f where FranjaId=f.IdFranja)>0 then 
+			insert falta  (IdAlumno, IdFranjaHoraria, FechaFalta)  values (AlumnoId, HoraId, DiaParametro);
+			set mensaje = "falta exitosa";
+		else
+			set mensaje = "esa hora no existe";
+		end if; /* end if del comprobador de franjas horarias*/
+	else
+		set mensaje = "ese alumno no existe";
+	end if; /* end if del comprobador de alumnos*/
+else
+	set mensaje = "ese dia no existe o no es lectivo";
+end if; /* end if del comprobador de dias*/
+				
+END//
+DELIMITER ;
+
+
+-- Volcando estructura para procedimiento cicloinformatica1415.RegistrarPrueba
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RegistrarPrueba`(IN `diaPrueba` DATETIME, IN `PruebaNombre` VARCHAR(500), IN `ModuloId` tiNYINT, IN `tipoPruebaId` tinyINT, IN `ProfesorId` TINYINT, OUT `mensaje` varCHAR(50))
+BEGIN
+if(SELECT count(*) FROM prueba p where diaPrueba= p.FechaRealizacion and PruebaNombre=p.NombrePrueba and ModuloId=p.IdModulo and tipoPruebaId=p.IdTipoPrueba and ProfesorId=p.IdProfesor and hour(diaPrueba)=hour(p.FechaRealizacion))=0  then
+	if(SELECT count(*) FROM calendario c where day(diaPrueba)=c.NumeroDia and MONTH(diaPrueba)=c.IdMes and year(diaPrueba)=year(now()) and hour(diaPrueba) between 0 and 24 and minute(diaPrueba) between 0 and 60 and second(diaPrueba) between 0 and 60 and c.IdTipoDia=6)>0 then
+		if (SELECT count(*) FROM profesor p where ProfesorId = p.IdProfesor)>0 then
+			if (SELECT count(*) FROM modulo m where ModuloId = m.IdModulo)>0 then
+				if (SELECT count(*) FROM tipoprueba tp where tipoPruebaId=tp.IdTipoPrueba)>0 then
+					insert prueba  (FechaRealizacion, NombrePrueba, IdModulo, IdTipoPrueba, IdProfesor)  values (diaPrueba, PruebaNombre, ModuloId, tipoPruebaId, ProfesorId );
+					set mensaje = "prueba exitosa";
+				else
+					set mensaje = "ese tipo de prueba no existe";
+				end if;/*comprobador de tipo de prueba*/
+			else
+				set mensaje = "ese modulo no existe";
+			end if;/*comprobador de modulos*/
+		else
+			set mensaje = "profesor no existe";
+		end if;/*comprobador de profesores*/
+	else
+		set mensaje = "dia no valido";/* EHHH QUE ME HJODES EL CODIGOOOOO*/
+	end if; /*comprobador de dia valido*/
+else
+	set mensaje = "prueba ya registrada con anterioridad";
+end if; /*comprobador pruebas repetidas*/	
+END//

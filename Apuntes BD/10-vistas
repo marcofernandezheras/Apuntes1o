@@ -1,0 +1,19 @@
+/* Crea una forma de ver los datos de diferentes tablas */
+
+/*
+
+CREATE VIEW nombre_tabla AS Select...
+
+*/
+
+CREATE VIEW alumnosPrimero(alumno) as 
+SELECT Concat(c.ApellidosComunidad,", ",c.NombreComunidad) 
+from comunidadeducativa c, alumno a
+where
+c.IdComunidad = a.IdAlumno
+and a.Curso = 1
+ORDER BY c.ApellidosComunidad;
+
+
+/* Ver codigo de una vista */
+SHOW CREATE VIEW nombre_vista;

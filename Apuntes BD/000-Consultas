@@ -496,11 +496,17 @@ where m.HorasSemanales > (SELECT AVG(m.HorasSemanales) from modulo m)
 
 
 /* 9.	Los alumnos que faltaron en Noviembre en el módulo Base de datos. */
-SELECT c.NombreComunidad, f.FechaFalta 
-from falta f, comunidadeducativa c
-where 
-f.IdAlumno = c.IdComunidad
-and MONTH(FechaFalta) = 11;
+Select IdAlumno, IdFranjaHoraria, WEEKDAY(FechaFalta) from falta f
+where MONTH(f.FechaFalta) = 11
+and  
+	WEEKDAY(f.FechaFalta) + 1 in (
+					Select h.IdDiaSemana from horario h
+					where h.IdModulo = 2)
+
+and (  
+	f.IdFranjaHoraria in (Select h.IdFranja from horario h where h.IdModulo = 2)
+	or f.IdFranjaHoraria = 7
+ );
 
 /* 10.	Los alumnos que faltaron en Octubre en jornada completa. */
 SELECT * from falta f, comunidadeducativa c
@@ -537,3 +543,216 @@ and h.IdDiaSemana = d.IdDiaSemana;
 /* 16.	Cuantos fines de semanas (Sábados y Domingo) tiene un mes determinado */
 /* 17.	El mes con mayor número de días lectivos. */
 /* 18.	El mes de inicio y el último mes de una evaluación determinada. */
+
+/* Contabilizar el número de alumno por curso */
+SELECT Curso, count(*) as "Alumnos por curso" from alumno group by Curso
+
+/* Número de alumnos de primero por año de nacimiento */
+SELECT 
+(year(c.FechaNacimientoComunidad)) as "Año de nacimiento", 
+count(*) from comunidadeducativa c, alumno a
+where c.IdComunidad = a.IdAlumno
+and a.Curso = 1
+group by (year(c.FechaNacimientoComunidad));
+
+
+/* Contabilizar el número de municipios por provincias */
+Select p.NombreProvincia, count(*) from municipio m,  provincia p
+where p.CodigoProvincia = m.CodigoProvincia
+GROUP by m.CodigoProvincia;
+
+/* Contabilizar el número de municipios por provincias de Extremadura. */
+Select p.NombreProvincia, count(*) from municipio m,  provincia p
+where p.CodigoProvincia = m.CodigoProvincia
+and p.NombreProvincia in ("Badajoz","Cáceres")
+GROUP by m.CodigoProvincia
+
+/* La provincia con mayor número de municipios */
+Select p.NombreProvincia, count(*) from municipio m,  provincia p
+where p.CodigoProvincia = m.CodigoProvincia
+GROUP by m.CodigoProvincia
+HAVING count(*) >= ALL( 
+	Select count(*) from municipio m,  provincia p
+	where p.CodigoProvincia = m.CodigoProvincia
+	GROUP by m.CodigoProvincia
+)	
+
+
+/* Municipio con mayor numero de codigos postales */
+SELECT m.NombreMunicipio, COUNT(*) as numero from codigopostal c ,municipio m
+where c.IdMunicipio = m.IdMunicipio
+GROUP by c.IdMunicipio
+HAVING numero >= ALL(
+	SELECT COUNT(*) from codigopostal c 
+	GROUP by c.IdMunicipio)
+order by numero DESC
+
+/* Mes con mayor numero de dias lectivos */
+Select m.NombreMes, count(*) as numero from calendario c , mes m
+where c.IdTipoDia = 6
+and c.IdMes = m.IdMes
+GROUP by c.IdMes
+HAVING numero >= ALL(
+	Select count(*) from calendario c 
+	where c.IdTipoDia = 6
+	GROUP by c.IdMes)
+
+/* Faltas parciales */
+Select f.FechaFalta as fecha, f.IdAlumno as alumno, h.IdDiaSemana as DiaSemana,
+h.IdFranja as franja, h.IdModulo as modulo
+from falta f, horario h, modulo m
+where 
+h.IdFranja = f.IdFranjaHoraria
+and h.IdModulo = m.IdModulo
+and (DAYOFWEEK(f.FechaFalta) - 1) = h.IdDiaSemana
+and m.Curso = 1
+order by 2,4;
+
+/* Descomponer faltas totales en parciales */
+Select f.FechaFalta as fecha, f.IdAlumno as alumno, h.IdDiaSemana as DiaSemana,
+h.IdFranja as franja, h.IdModulo as modulo
+from falta f, horario h, modulo m
+where 
+f.IdFranjaHoraria = 7
+and h.IdModulo = m.IdModulo
+and (DAYOFWEEK(f.FechaFalta) - 1) = h.IdDiaSemana
+and m.Curso = 1
+order by 2,4;
+
+/* 1.	El alumno que más faltó a jornada completa en un mes determinado. */
+Select c.NombreComunidad, c.ApellidosComunidad, Count(*) 
+from falta f, comunidadeducativa c 
+where f.IdFranjaHoraria = 7
+and f.IdAlumno = c.IdComunidad
+group by f.IdAlumno
+	HAVING Count(*) >= ALL(
+	Select Count(*) 
+	from falta f
+	where f.IdFranjaHoraria = 7
+	group by f.IdAlumno
+);
+
+/* 2.	Alumnos de primero agrupados por ciudades */
+SELECT m.NombreMunicipio,cod.CodigoPostal, count(*) as "Numero de alumnos"
+from comunidadeducativa c, alumno a, codigopostal cod, municipio m
+where c.IdComunidad = a.IdAlumno
+and c.`CódigoPostalComunidad` = cod.CodigoPostal
+and cod.IdMunicipio = m.IdMunicipio
+and a.Curso = 1
+group by c.`CódigoPostalComunidad`;
+
+/* 3.	Alumnos agrupados por edades con su cuenta */
+SELECT Year(now()) - Year(c.FechaNacimientoComunidad), count(*) from comunidadeducativa c, alumno a
+where c.IdComunidad = a.IdAlumno
+GROUP by Year(c.FechaNacimientoComunidad)
+order by 1;
+
+/* 4.	El módulo con mayor número de faltas(faltas parciales) en un mes determinado */
+Select modulo, count(*) from (
+	Select f.FechaFalta as fecha, f.IdAlumno as alumno, h.IdDiaSemana as DiaSemana,
+	h.IdFranja as franja, h.IdModulo as modulo
+	from falta f, horario h, modulo m
+	where 
+	h.IdFranja = f.IdFranjaHoraria
+	and h.IdModulo = m.IdModulo
+	and (DAYOFWEEK(f.FechaFalta) - 1) = h.IdDiaSemana
+	and m.Curso = 1
+	and MONTH(f.FechaFalta)=10
+	
+	UNION
+	
+	Select f.FechaFalta as fecha, f.IdAlumno as alumno, h.IdDiaSemana as DiaSemana,
+	h.IdFranja as franja, h.IdModulo as modulo
+	from falta f, horario h, modulo m
+	where 
+	f.IdFranjaHoraria = 7
+	and h.IdModulo = m.IdModulo
+	and (DAYOFWEEK(f.FechaFalta) - 1) = h.IdDiaSemana
+	and m.Curso = 1
+	and MONTH(f.FechaFalta)=10
+) as tabla
+group by modulo
+having count(*) >= ALL(Select  count(*) from (
+	Select f.FechaFalta as fecha, f.IdAlumno as alumno, h.IdDiaSemana as DiaSemana,
+	h.IdFranja as franja, h.IdModulo as modulo
+	from falta f, horario h, modulo m
+	where 
+	h.IdFranja = f.IdFranjaHoraria
+	and h.IdModulo = m.IdModulo
+	and (DAYOFWEEK(f.FechaFalta) - 1) = h.IdDiaSemana
+	and m.Curso = 1
+	and MONTH(f.FechaFalta)=10
+	
+	UNION
+	
+	Select f.FechaFalta as fecha, f.IdAlumno as alumno, h.IdDiaSemana as DiaSemana,
+	h.IdFranja as franja, h.IdModulo as modulo
+	from falta f, horario h, modulo m
+	where 
+	f.IdFranjaHoraria = 7
+	and h.IdModulo = m.IdModulo
+	and (DAYOFWEEK(f.FechaFalta) - 1) = h.IdDiaSemana
+	and m.Curso = 1
+	and MONTH(f.FechaFalta)=10
+) as tabla group by modulo)
+
+
+/* 5.	El alumno que más faltó a jornada completa en un mes determinado. */
+Select c.NombreComunidad, c.ApellidosComunidad, Count(*) 
+from falta f, comunidadeducativa c 
+where f.IdFranjaHoraria = 7
+and f.IdAlumno = c.IdComunidad
+group by f.IdAlumno
+	HAVING Count(*) >= ALL(
+	Select Count(*) 
+	from falta f
+	where f.IdFranjaHoraria = 7
+	group by f.IdAlumno
+);
+
+/* 6.	El mes con mayor número de días lectivos.  */
+Select m.NombreMes , count(*) from calendario c, mes m
+where  c.IdMes = m.IdMes
+and c.IdTipoDia = 6
+group by c.IdMes
+HAVING count(*) >= ALL(
+	Select count(*) from calendario c
+	where c.IdTipoDia = 6
+	group by c.IdMes
+)
+
+/* 7.	La(s) comunidad(es) con menor número de provincias */
+Select c.NombreComunidad, Count(*) from comunidadautonoma c, provincia p
+where p.IdComunidad = c.IdComunidad
+group by p.IdComunidad
+HAVING Count(*) <= ALL(
+	Select Count(*) from comunidadautonoma c, provincia p
+	where p.IdComunidad = c.IdComunidad
+	group by p.IdComunidad
+)
+
+/* 8.	La(s) comunidad(es) con dos provincias */
+Select c.NombreComunidad, Count(*) from comunidadautonoma c, provincia p
+where p.IdComunidad = c.IdComunidad
+group by p.IdComunidad
+HAVING Count(*) = 2
+
+/* 9.	La(s) comunidad(es) cuyo número de provincias es superior o igual a la media. */
+Select c.NombreComunidad, Count(*) from comunidadautonoma c, provincia p
+where p.IdComunidad = c.IdComunidad
+group by p.IdComunidad
+HAVING Count(*) >= (
+	Select avg(cuenta.total) from (
+		SELECT count(*) as total from comunidadautonoma c, provincia p
+		where p.IdComunidad = c.IdComunidad
+		group by p.IdComunidad) as cuenta
+    )
+
+/* Crear vista de los alumnos de primero ordenados por apellido */
+CREATE VIEW alumnosPrimero(alumno) as 
+SELECT Concat(c.ApellidosComunidad,", ",c.NombreComunidad) 
+from comunidadeducativa c, alumno a
+where
+c.IdComunidad = a.IdAlumno
+and a.Curso = 1
+ORDER BY c.ApellidosComunidad;

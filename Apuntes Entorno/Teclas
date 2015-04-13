@@ -10,6 +10,9 @@ Teclalogia:
 
 	ctrl + alt + h = buscar referencias
 	f3			   = ir a implementacion
+	f4 (en la clase) = jerarquia de clases
+
+	atl + shift + z = try-catch
 Debuging:
 	f6  = ejecutar linea actual
 	f8  = resumir / continuar
@@ -17,3 +20,4 @@ Debuging:
 
 	ctrl + shift + d = display
 	ctrl + shift + i = inspeccionar
+
