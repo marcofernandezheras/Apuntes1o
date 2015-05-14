@@ -1,0 +1,4 @@
+DECLARE _accion_ HANDLER for _disparador_ _operaciones_
+
+DECLARE EXIT HANDLER for SQLEXCEPTION ROLLBACK; /* Para salir + deshacer cambios. */
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin = 1; /* Para continuar + set variable */

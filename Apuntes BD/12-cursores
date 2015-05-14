@@ -1,0 +1,19 @@
+DECLARE _nombreCursor_ CURSOR FOR _consulta_
+
+DECLARE cursorAlimento CURSOR FOR Select a.NombreAlimentoBorrado, DATE(a.FechaBorrado) from alimentoborrado a ORDER by a.NombreAlimentoBorrado, a.FechaBorrado;
+
+
+/* Esqueleto basico para recorrer */
+declare fin int default 0;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin = 1;
+loop1: LOOP
+   
+	FETCH cursorAlimento into NombreActual, FechaActual;		
+	
+	IF fin = 1 THEN
+		LEAVE loop1;
+	END IF;
+		
+	... operaciones ...
+
+end loop loop1;

@@ -8,5 +8,5 @@ INSERT INTO cicloinformatica1415.alumno
 VALUES(0, '', 0);
 
 
-/* Insertar resuldato de un select */
+/* Insertar resultado de un select */
 INSERT INTO imparte (IdModulo,IdProfesor)  SELECT IdModulo,CodigoProfesor from modulo;

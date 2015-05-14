@@ -1,0 +1,11 @@
+/* Copiar estructura sin datos */
+CREATE TABLE pruebas 
+SELECT *
+from registarprueba r
+where 0;
+
+/* Copiar datos en tabla nueva */
+CREATE TABLE pruebas 
+SELECT DISTINCT r.FechaRealizacion, p.NombrePrueba, r.IdModulo, r.IdTipoPrueba , r.IdProfesor
+from registarprueba r, prueba p
+where r.IdNombrePrueba = p.IdPrueba;

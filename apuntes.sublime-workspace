@@ -36,17 +36,6 @@
 	"buffers":
 	[
 		{
-			"contents": "var names = jQuery('.first_name');\nfor(var i=0; i< names.length; i++){\n  names[i].value = \"Marco Antonio\";\n}\n\nvar apellidos = jQuery('.last_name');\nfor(var i=0; i< apellidos.length; i++){\n  apellidos[i].value = \"Fernández\";\n}\n\nvar mail = jQuery('.ch_email');\nfor(var i=0; i< mail.length; i++){\n  mail[i].value = \"marcofernandezheras@gmail.com\";\n} \n\nvar btns = jQuery(\".ch_submit\");\nfor(var i=0; i< btns.length; i++){\n  btns.click();\n} \n\nvar cookies = document.cookie.split(\";\");\nfor(var i=0; i < cookies.length; i++) {\n    var equals = cookies[i].indexOf(\"=\");\n    var name = equals > -1 ? cookies[i].substr(0, equals) : cookies[i];\n    jQuery.removeCookie(name, { path: '/' });\n}\n\n/*location.reload(); */\n\n",
-			"file": "/D/go",
-			"file_size": 728,
-			"file_write_time": 130691631489348102,
-			"settings":
-			{
-				"buffer_size": 707,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "Apuntes BD/11-INSERT",
 			"settings":
 			{
@@ -55,13 +44,40 @@
 			}
 		},
 		{
-			"contents": "/* DECLARE nombre_cursor CURSOR FOR sentencia_select */\nDECLARE cursor1 CURSOR FOR SELECT * from comunidadeducativa;",
+			"contents": "/* DECLARE nombre_cursor CURSOR FOR sentencia_select */\nDECLARE cursor1 CURSOR FOR SELECT * from comunidadeducativa;\n\n\n/* Contar cursos */\nBEGIN\n\ndeclare aulax tinyint(1);\ndeclare cursox varchar(1);\ndeclare cuentax int default 0;\ndeclare fin tinyint(1) default 0;\n\nDECLARE cursor1 CURSOR FOR SELECT c.Aula, c.Curso from curso c ORDER BY 1;\nDECLARE CONTINUE HANDLER FOR NOT FOUND SET fin = 1;\n\nOPEN cursor1;\n\nloop1: LOOP\n   \n	FETCH cursor1 into aulax, cursox;	\n\n	IF fin = 1 THEN\n		LEAVE loop1;\n	END IF;\n	set cuentax = cuentax + 1;\n\nend loop loop1;\n\nCLOSE cursor1;\nset mensaje = concat(\"Cursos \" , cuentax);\nEND",
 			"file": "Apuntes BD/12-cursores",
 			"file_size": 0,
 			"file_write_time": 130733919791804515,
 			"settings":
 			{
-				"buffer_size": 116,
+				"buffer_size": 609,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "DECLARE handler_action HANDLER\n    FOR condition_value [, condition_value] ...\n    statement\n\nhandler_action:\n    CONTINUE\n  | EXIT\n  | UNDO\n\ncondition_value:\n    mysql_error_code\n  | SQLSTATE [VALUE] sqlstate_value\n  | condition_name\n  | SQLWARNING\n  | NOT FOUND\n  | SQLEXCEPTION",
+			"file": "Apuntes BD/13-handlers",
+			"file_size": 0,
+			"file_write_time": 130737280613648231,
+			"settings":
+			{
+				"buffer_size": 280,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Apuntes BD/14-Transacciones",
+			"settings":
+			{
+				"buffer_size": 119,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Apuntes Entorno/Teclas",
+			"settings":
+			{
+				"buffer_size": 513,
 				"line_ending": "Windows"
 			}
 		}
@@ -128,11 +144,12 @@
 	"expanded_folders":
 	[
 		"/D/Apuntes",
-		"/D/Apuntes/Apuntes BD",
 		"/D/Apuntes/Apuntes Entorno"
 	],
 	"file_history":
 	[
+		"/D/ProyectosEclipse/Programacion/Tuenti/Contest003/numbers.txt.xz",
+		"/D/go",
 		"/C/Users/marco/Desktop/tema/Config.xml",
 		"/C/XAMMP/htdocs/prestashop/config/settings.inc.php",
 		"/E/Mayor.java",
@@ -285,39 +302,11 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/D/go",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 707,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								707,
-								707
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 168.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "Apuntes BD/11-INSERT",
 					"semi_transient": false,
 					"settings":
@@ -341,24 +330,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 1,
 					"file": "Apuntes BD/12-cursores",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 116,
+						"buffer_size": 609,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								116,
-								56
+								591,
+								591
 							]
 						],
 						"settings":
@@ -370,7 +359,96 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Apuntes BD/13-handlers",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 280,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								280,
+								280
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Apuntes BD/14-Transacciones",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 119,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								119,
+								119
+							]
+						],
+						"settings":
+						{
+							"open_with_edit": true,
+							"syntax": "Packages/SQL/SQL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Apuntes Entorno/Teclas",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 513,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
